@@ -37,6 +37,17 @@ public class SelectedScript : MonoBehaviour
             light.enabled = false;
         }
     }
+    private string testText = "Select Your Rebel";
+    public void OnGUI()
+    {
+        var infoBox = new Rect();
+        infoBox.x = Screen.width - 500;
+        infoBox.y = 20;
+        infoBox.width = 400;
+        infoBox.height = 100;
+
+        GUI.Box(infoBox, testText);
+    }
 
     // Update is called once per frame
     public void Update()
@@ -65,6 +76,7 @@ public class SelectedScript : MonoBehaviour
             selected_particles[particles2].enableEmission = false;
             selected_particles[particles3].enableEmission = false;
             selected_particles[particles4].enableEmission = false;
+            testText = "Rebel 1";
         }
         else if (colliderName == "collider2")
         {
@@ -77,6 +89,7 @@ public class SelectedScript : MonoBehaviour
             selected_particles[particles2].enableEmission = true;
             selected_particles[particles3].enableEmission = false;
             selected_particles[particles4].enableEmission = false;
+            testText = "Rebel 2";
         }
         else if (colliderName == "collider3")
         {
@@ -89,6 +102,7 @@ public class SelectedScript : MonoBehaviour
             selected_particles[particles2].enableEmission = false;
             selected_particles[particles3].enableEmission = true;
             selected_particles[particles4].enableEmission = false;
+            testText = "Rebel 3";
         }
         else if (colliderName == "collider4")
         {
@@ -101,6 +115,7 @@ public class SelectedScript : MonoBehaviour
             selected_particles[particles2].enableEmission = false;
             selected_particles[particles3].enableEmission = false;
             selected_particles[particles4].enableEmission = true;
+            testText = "Rebel 4";
         }
         else
         {
