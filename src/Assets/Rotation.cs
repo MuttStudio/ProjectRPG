@@ -10,6 +10,7 @@ public class Rotation : MonoBehaviour
 
     private int rotationCounter = 0;
 
+    private string headerText = "Select Your Rebel";
 
     // Use this for initialization
     public void Start()
