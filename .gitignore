@@ -2,3 +2,5 @@
 .*.swp
 .*~
 *.user*
+*.suo
+src/Library
