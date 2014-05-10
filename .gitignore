@@ -1,5 +1,12 @@
-/src/Temp
 .*.swp
 .*~
 *.user*
-src/src-csharp.v11.suo
+*.sdf
+*.opensdf
+*.suo
+*.vcxproj.uer
+/ipch
+/Binaries
+/DerivedDataCache
+/Intermediate
+/Saved
