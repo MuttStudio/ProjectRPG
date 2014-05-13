@@ -5,6 +5,8 @@
 *.opensdf
 *.suo
 *.vcxproj.uer
+*.uproject
+*.sln
 /ipch
 /Binaries
 /DerivedDataCache
