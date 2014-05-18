@@ -2,7 +2,6 @@
 
 #include "ProjectRPG.h"
 #include "ProjectRPGGameMode.h"
-#include "ProjectRPGHUD.h"
 #include "ProjectRPGPlayerController.h"
 
 AProjectRPGGameMode::AProjectRPGGameMode(const class FPostConstructInitializeProperties& PCIP)
@@ -15,8 +14,15 @@ AProjectRPGGameMode::AProjectRPGGameMode(const class FPostConstructInitializePro
         DefaultPawnClass = (UClass*)PlayerPawnObject.Object->GeneratedClass;
     }
 
-    // use our custom HUD class
-    HUDClass = AProjectRPGHUD::StaticClass();
+    static ConstructorHelpers::FObjectFinder<UBlueprint> HUD(TEXT("/Game/Blueprints/BP_ProjectRPGHUD"));
+    if (HUD.Object != NULL)
+    {
+        HUDClass = (UClass*)HUD.Object->GeneratedClass;
+    }
 
-    PlayerControllerClass = AProjectRPGPlayerController::StaticClass();
+    static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerController(TEXT("/Game/Blueprints/BP_ProjectRPGPlayerController"));
+    if (PlayerController.Object != NULL)
+    {
+        PlayerControllerClass = (UClass*)PlayerController.Object->GeneratedClass;
+    }
 }

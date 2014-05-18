@@ -6,6 +6,14 @@
 /**
  * Represents an item that can be placed into the player's inventory
  */
+
+UENUM(BlueprintType)
+enum MeshType
+{
+    dropedMesh UMETA(DisplayName = "Drop Mesh"),
+    equipedMesh UMETA(DisplayName = "Equip Mesh")
+};
+
 UCLASS()
 class AProjectRPGItem : public AActor
 {
@@ -20,7 +28,7 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         FString Description;
-    
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
@@ -30,12 +38,12 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Dropped"))
         virtual void Dropped();
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Item)
-        TSubobjectPtr<class UStaticMeshComponent> Mesh;
-
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-    bool isStackable;
+        bool isStackable;
 
-    virtual void BeginPlay() OVERRIDE;
+    UFUNCTION(BlueprintCallable, Category = Item, meta = (FriendlyName = "Item: Change Mesh"))
+        void SetMeshType(MeshType type);
+
+    //virtual void BeginPlay() OVERRIDE;
     void PickedUp();
 };
