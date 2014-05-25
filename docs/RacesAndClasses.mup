@@ -143,16 +143,28 @@
                               "background": "#993300"
                             }
                           },
-                          "id": 277
+                          "id": 277,
+                          "ideas": {}
                         },
                         "2": {
-                          "title": "ROAR",
+                          "title": "DISMEMBERING ROAR",
                           "attr": {
                             "style": {
                               "background": "#993300"
                             }
                           },
-                          "id": 278
+                          "id": 278,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 368
+                            }
+                          }
                         }
                       }
                     },
@@ -343,16 +355,6 @@
                       },
                       "id": 166,
                       "ideas": {
-                        "1": {
-                          "title": "DEPLOY SENTRY",
-                          "attr": {
-                            "style": {
-                              "background": "#993300"
-                            }
-                          },
-                          "ideas": {},
-                          "id": 299
-                        },
                         "2": {
                           "title": "THROW BOMB",
                           "attr": {
@@ -381,14 +383,14 @@
                           "id": 301
                         },
                         "2": {
-                          "title": "DEPLOY MINES",
+                          "title": "IRON BLOOD",
                           "attr": {
                             "style": {
                               "background": "#993300"
                             }
                           },
                           "ideas": {},
-                          "id": 302
+                          "id": 373
                         }
                       },
                       "id": 167
@@ -404,6 +406,36 @@
                             }
                           },
                           "id": 237
+                        },
+                        "2": {
+                          "title": "DEPLOY MINES",
+                          "attr": {
+                            "style": {
+                              "background": "#993300"
+                            }
+                          },
+                          "ideas": {},
+                          "id": 302
+                        },
+                        "3": {
+                          "title": "DEPLOY SENTRY",
+                          "attr": {
+                            "style": {
+                              "background": "#993300"
+                            }
+                          },
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 369
+                            }
+                          },
+                          "id": 299
                         }
                       },
                       "id": 236,
@@ -435,7 +467,7 @@
       "id": 7,
       "ideas": {
         "1": {
-          "title": "RANGED STEALTH",
+          "title": "RANGED STEALTH, VISUAL TRICKERY",
           "id": 328,
           "ideas": {
             "1": {
@@ -551,6 +583,26 @@
                           },
                           "ideas": {},
                           "id": 343
+                        },
+                        "2": {
+                          "title": "SABOTAGE",
+                          "attr": {
+                            "style": {
+                              "background": "#666699"
+                            }
+                          },
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "id": 362,
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              }
+                            }
+                          },
+                          "id": 361
                         }
                       }
                     },
@@ -560,16 +612,6 @@
                         "style": {}
                       },
                       "ideas": {
-                        "1": {
-                          "title": "BLIND",
-                          "attr": {
-                            "style": {
-                              "background": "#666699"
-                            }
-                          },
-                          "ideas": {},
-                          "id": 346
-                        },
                         "0.5": {
                           "title": "SHEILD",
                           "attr": {
@@ -623,6 +665,16 @@
                           },
                           "ideas": {},
                           "id": 342
+                        },
+                        "6": {
+                          "title": "BLIND",
+                          "attr": {
+                            "style": {
+                              "background": "#666699"
+                            }
+                          },
+                          "ideas": {},
+                          "id": 346
                         }
                       },
                       "id": 233,
@@ -643,7 +695,7 @@
           }
         },
         "2": {
-          "title": "CLOSE QUARTERS STEALTH",
+          "title": "CLOSE QUARTERS STEALTH, MENTAL TRICKERY",
           "id": 329,
           "ideas": {
             "1": {
@@ -776,7 +828,18 @@
                               "background": "#666699"
                             }
                           },
-                          "id": 334
+                          "id": 334,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 363
+                            }
+                          }
                         },
                         "2": {
                           "title": "IMBUE WEAPON",
@@ -958,15 +1021,6 @@
                       },
                       "id": 148,
                       "ideas": {
-                        "1": {
-                          "title": "SUSPEND IN AIR",
-                          "attr": {
-                            "style": {
-                              "background": "#00ccff"
-                            }
-                          },
-                          "id": 262
-                        },
                         "3": {
                           "title": "LIFE STEAL",
                           "attr": {
@@ -975,6 +1029,15 @@
                             }
                           },
                           "id": 266
+                        },
+                        "4": {
+                          "title": "RANGED BOLT",
+                          "attr": {
+                            "style": {
+                              "background": "#ffffff"
+                            }
+                          },
+                          "id": 372
                         }
                       }
                     },
@@ -1025,6 +1088,26 @@
                             }
                           },
                           "id": 231
+                        },
+                        "2": {
+                          "title": "LEVITATE",
+                          "attr": {
+                            "style": {
+                              "background": "#00ccff"
+                            }
+                          },
+                          "id": 370,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 371
+                            }
+                          }
                         }
                       },
                       "id": 230,
@@ -1172,6 +1255,26 @@
                             }
                           },
                           "id": 270
+                        },
+                        "1.5": {
+                          "title": "RAIN",
+                          "attr": {
+                            "style": {
+                              "background": "#00ccff"
+                            }
+                          },
+                          "id": 358,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 364
+                            }
+                          }
                         }
                       }
                     },
@@ -1414,7 +1517,18 @@
                               "background": "#ff9900"
                             }
                           },
-                          "id": 350
+                          "id": 350,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 366
+                            }
+                          }
                         }
                       }
                     },
@@ -1600,7 +1714,18 @@
                               "background": "#ff9900"
                             }
                           },
-                          "id": 286
+                          "id": 286,
+                          "ideas": {
+                            "1": {
+                              "title": "ULT",
+                              "attr": {
+                                "style": {
+                                  "background": "#000000"
+                                }
+                              },
+                              "id": 365
+                            }
+                          }
                         },
                         "4": {
                           "title": "IMBUE WEAPON",
@@ -1677,15 +1802,6 @@
         }
       }
     },
-    "-8.5": {
-      "title": "EACH RACE IS TWO SIDED, ONE CLASS COMPLIMENTING THE OTHER TO PROVIDE VARIETY AND VERSATILITY. BECOME THE PERFECT WARRIOR FOR YOUR RACE. THE FULL PACKAGE.",
-      "id": 353,
-      "attr": {
-        "style": {
-          "background": "#000000"
-        }
-      }
-    },
     "1.5": {
       "title": "A CLASS ALIGNMENT METER TELLS THE PLAYER HOW CLOSE HE/SHE IS TO EACH CLASS, BASED ON PLAY STYLE. IT CAN BE FILLED IN BOTH DIRECTIONS AT ONCE, AT THE COST OF HIGH LEVEL ABILITIES, OR FOCUSED ONE AT A TIME  ",
       "id": 354,
@@ -1695,7 +1811,7 @@
         }
       }
     },
-    "1.75": {
+    "-6": {
       "title": "EACH RACE HAS A TWO FOLD TEAMWORK ROLE, MEANING ANY ONE PLAYER HAS THE ABILITY TO FILL 2 ROLES AS NEEDED. THIS MEANS AS FEW AS 1 OR 2 PLAYERS CAN TACKLE HARD CHALLENGES. ",
       "attr": {
         "style": {
@@ -1703,6 +1819,15 @@
         }
       },
       "id": 357
+    },
+    "1.75": {
+      "title": "EACH ABILITY IS HIGHLY SKILL BASED. THE MORE POWERFUL THE ABILITY, THE MORE PRECISION AND TIMING REQUIRED TO PULL IT OFF. THIS ISN'T JUST ABOUT LONG COOL DOWNS.    ",
+      "attr": {
+        "style": {
+          "background": "#000000"
+        }
+      },
+      "id": 360
     }
   },
   "attr": {
