@@ -194,25 +194,6 @@
                         }
                       },
                       "id": 173
-                    },
-                    "1.5": {
-                      "title": "UTILITY",
-                      "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 240,
-                          "ideas": {}
-                        }
-                      },
-                      "id": 239,
-                      "attr": {
-                        "style": {}
-                      }
                     }
                   },
                   "id": 171
@@ -398,15 +379,6 @@
                     "1.5": {
                       "title": "UTILITY",
                       "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 237
-                        },
                         "2": {
                           "title": "DEPLOY MINES",
                           "attr": {
@@ -452,6 +424,32 @@
           "attr": {
             "style": {
               "background": "#993300"
+            }
+          }
+        },
+        "3": {
+          "title": "CORE",
+          "id": 378,
+          "attr": {
+            "style": {
+              "background": "#993300"
+            }
+          },
+          "ideas": {
+            "1": {
+              "title": "UTILITY",
+              "id": 379,
+              "ideas": {
+                "1": {
+                  "title": "PUSH/PULL/DEFLECT",
+                  "attr": {
+                    "style": {
+                      "background": "#ffffff"
+                    }
+                  },
+                  "id": 237
+                }
+              }
             }
           }
         }
@@ -627,15 +625,6 @@
                     "1.5": {
                       "title": "UTILITY",
                       "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 234
-                        },
                         "3": {
                           "title": "WHISPER",
                           "attr": {
@@ -863,24 +852,6 @@
                         }
                       }
                     },
-                    "2": {
-                      "title": "UTILITY",
-                      "attr": {
-                        "style": {}
-                      },
-                      "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 308
-                        }
-                      },
-                      "id": 307
-                    },
                     "3": {
                       "title": "DEFENSE",
                       "attr": {
@@ -912,6 +883,35 @@
                   "id": 305
                 }
               }
+            }
+          },
+          "attr": {
+            "style": {
+              "background": "#666699"
+            }
+          }
+        },
+        "3": {
+          "title": "CORE",
+          "id": 380,
+          "ideas": {
+            "1": {
+              "title": "UTILITY",
+              "attr": {
+                "style": {}
+              },
+              "ideas": {
+                "1": {
+                  "title": "PUSH/PULL",
+                  "attr": {
+                    "style": {
+                      "background": "#ffffff"
+                    }
+                  },
+                  "id": 308
+                }
+              },
+              "id": 307
             }
           },
           "attr": {
@@ -1080,15 +1080,6 @@
                     "1.5": {
                       "title": "UTILITY",
                       "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 231
-                        },
                         "2": {
                           "title": "LEVITATE",
                           "attr": {
@@ -1313,29 +1304,40 @@
                         }
                       },
                       "id": 155
-                    },
-                    "1.5": {
-                      "title": "UTILITY",
-                      "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 228
-                        }
-                      },
-                      "id": 227,
-                      "attr": {
-                        "style": {}
-                      }
                     }
                   },
                   "id": 153
                 }
               }
+            }
+          },
+          "attr": {
+            "style": {
+              "background": "#00ccff"
+            }
+          }
+        },
+        "1.5": {
+          "title": "CORE",
+          "id": 376,
+          "ideas": {
+            "1": {
+              "title": "UTILITY",
+              "attr": {
+                "style": {}
+              },
+              "ideas": {
+                "1": {
+                  "title": "PUSH/PULL/DEFLECT",
+                  "attr": {
+                    "style": {
+                      "background": "#ffffff"
+                    }
+                  },
+                  "id": 375
+                }
+              },
+              "id": 374
             }
           },
           "attr": {
@@ -1558,21 +1560,6 @@
                           "id": 283
                         }
                       }
-                    },
-                    "1.5": {
-                      "title": "UTILITY",
-                      "id": 192,
-                      "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 193
-                        }
-                      }
                     }
                   },
                   "attr": {
@@ -1764,24 +1751,6 @@
                         }
                       },
                       "id": 137
-                    },
-                    "1.5": {
-                      "title": "UTILITY",
-                      "ideas": {
-                        "1": {
-                          "title": "PUSH/PULL",
-                          "attr": {
-                            "style": {
-                              "background": "#ffffff"
-                            }
-                          },
-                          "id": 243
-                        }
-                      },
-                      "id": 242,
-                      "attr": {
-                        "style": {}
-                      }
                     }
                   },
                   "id": 135
@@ -1792,6 +1761,35 @@
           "attr": {
             "style": {
               "background": "#ff9900"
+            }
+          }
+        },
+        "3": {
+          "title": "CORE",
+          "id": 377,
+          "attr": {
+            "style": {
+              "background": "#ff9900"
+            }
+          },
+          "ideas": {
+            "1": {
+              "title": "UTILITY",
+              "ideas": {
+                "1": {
+                  "title": "PUSH/PULL/DEFLECT",
+                  "attr": {
+                    "style": {
+                      "background": "#ffffff"
+                    }
+                  },
+                  "id": 243
+                }
+              },
+              "id": 242,
+              "attr": {
+                "style": {}
+              }
             }
           }
         }
