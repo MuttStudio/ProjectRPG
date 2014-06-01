@@ -4,21 +4,34 @@
 AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)
 {
-    Mesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("Mesh"));
-    RootComponent = Mesh;
+    //CurrentMesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("Mesh"));
+    //RootComponent = CurrentMesh;
 }
 
-void AProjectRPGItem::BeginPlay()
-{
-    Super::BeginPlay();
-    Mesh->SetSimulatePhysics(true);
-    Mesh->WakeRigidBody();
-}
+//void AProjectRPGItem::BeginPlay()
+//{
+//    Super::BeginPlay();
+//    CurrentMesh ->SetSimulatePhysics(true);
+//    CurrentMesh->WakeRigidBody();
+//}
 
 void AProjectRPGItem::PickedUp()
 {
-    if (Mesh)
+    //if (DropMesh)
+    //{
+    //    DropMesh->DestroyComponent(); // physical item has been picked up, destroy its visible component
+    //}
+}
+
+void AProjectRPGItem::SetMeshType(MeshType type)
+{
+    switch (type)
     {
-        Mesh->DestroyComponent(); // physical item has been picked up, destroy its visible component
+    case dropedMesh:
+        break;
+    case equipedMesh:
+        break;
+    default:
+        break;
     }
 }

@@ -3,21 +3,21 @@
 
 #include "ProjectRPGProjectile.generated.h"
 
-UCLASS(config=Game)
+UCLASS(config = Game)
 class AProjectRPGProjectile : public AActor
 {
-	GENERATED_UCLASS_BODY()
+    GENERATED_UCLASS_BODY()
 
-	/** Sphere collision component */
-	UPROPERTY(VisibleDefaultsOnly, Category=Projectile)
-	TSubobjectPtr<USphereComponent> CollisionComp;
+    /** Sphere collision component */
+    UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
+    TSubobjectPtr<USphereComponent> CollisionComp;
 
-	/** Projectile movement component */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Movement)
-	TSubobjectPtr<class UProjectileMovementComponent> ProjectileMovement;
+    /** Projectile movement component */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
+        TSubobjectPtr<class UProjectileMovementComponent> ProjectileMovement;
 
-	/** called when projectile hits something */
-	UFUNCTION()
-	void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+    /** called when projectile hits something */
+    UFUNCTION()
+        void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
 

@@ -1,8 +1,13 @@
-// Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
-#pragma once 
 
+
+#pragma once
+
+#include "GameFramework/HUD.h"
 #include "ProjectRPGHUD.generated.h"
 
+/**
+ * 
+ */
 UCLASS()
 class AProjectRPGHUD : public AHUD
 {
@@ -10,12 +15,9 @@ class AProjectRPGHUD : public AHUD
 
 public:
 
-	/** Primary draw call for the HUD */
-	virtual void DrawHUD() OVERRIDE;
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "HUD: Show Menu"))
+    void ShowMenu(bool show);
 
-private:
-	/** Crosshair asset pointer */
-	UTexture2D* CrosshairTex;
-
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "HUD: Show Main Hud"))
+    void ShowMainHud(bool show);
 };
-

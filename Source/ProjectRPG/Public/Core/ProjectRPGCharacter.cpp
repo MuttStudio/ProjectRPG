@@ -2,6 +2,7 @@
 
 #include "ProjectRPG.h"
 #include "ProjectRPGCharacter.h"
+#include "ProjectRPGPlayerController.h"
 #include "ProjectRPGProjectile.h"
 
 /////////////////////////////////////////////////////////////////////////
@@ -114,7 +115,7 @@ void AProjectRPGCharacter::MoveForward(float Value)
     {
         // find out which way is forward
         const FRotator Rotation = GetControlRotation();
-        FRotator YawRotation(0, Rotation.Yaw, 0);
+        FRotator YawRotation(Rotation.Pitch, Rotation.Yaw, 0);
 
         // Get forward vector
         const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
@@ -211,9 +212,12 @@ TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
 
 void AProjectRPGCharacter::DropCurrentItem()
 {
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Testing");
     AProjectRPGCharacter::OnFire();
     AProjectRPGConsumable* testItem = GetWorld()->SpawnActor<AProjectRPGConsumable>();
     ItemInventory.Add(testItem);
+
+#ifdef UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Testing");
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
+#endif
 }
