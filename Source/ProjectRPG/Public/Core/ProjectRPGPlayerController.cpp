@@ -6,6 +6,7 @@ AProjectRPGPlayerController::AProjectRPGPlayerController(const class FPostConstr
 : Super(PCIP)
 {
     inMenuInputMode = false;
+    inInventoryMode = false;
 }
 
 void AProjectRPGPlayerController::SetupInputComponent()
@@ -25,6 +26,7 @@ void AProjectRPGPlayerController::SetupInputComponent()
         UInputDelegateBinding::BindInputDelegates(BGClass, InputComponent);
     }
 
+    InputComponent->BindAction("Inventory", IE_Pressed, this, &AProjectRPGPlayerController::ToggleInventoryMode);
     InputComponent->BindAction("Menu", IE_Pressed, this, &AProjectRPGPlayerController::ToggleMenuInputMode);
 }
 
@@ -45,4 +47,23 @@ void AProjectRPGPlayerController::ToggleMenuInputMode()
 
     Cast<AProjectRPGHUD>(MyHUD)->ShowMenu(inMenuInputMode);
     Cast<AProjectRPGHUD>(MyHUD)->ShowMainHud(!inMenuInputMode);
+}
+
+void AProjectRPGPlayerController::ToggleInventoryMode()
+{
+#ifdef UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Inventory Mode");
+#endif
+
+    inInventoryMode = !inInventoryMode;
+
+    InputComponent->bBlockInput = inInventoryMode;
+    bEnableClickEvents = inInventoryMode;
+    bEnableMouseOverEvents = inInventoryMode;
+    bShowMouseCursor = inInventoryMode;
+    SetIgnoreLookInput(inInventoryMode);
+    SetIgnoreMoveInput(inInventoryMode);
+
+    Cast<AProjectRPGHUD>(MyHUD)->ShowInventory(inInventoryMode);
+    Cast<AProjectRPGHUD>(MyHUD)->ShowMainHud(!inInventoryMode);
 }

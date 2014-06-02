@@ -13,10 +13,10 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     DropMesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("DropMesh"));
     DropMesh->SetOnlyOwnerSee(false);
     DropMesh->AttachParent = EquipMesh;
-    DropMesh->RelativeLocation = FVector(0.f, 0.f, 0.f);
     DropMesh->bCastDynamicShadow = false;
     DropMesh->CastShadow = false;
 
+    Icon = PCIP.CreateDefaultSubobject<UMaterial>(this, TEXT("Icon"));
 }
 
 //void AProjectRPGItem::BeginPlay()
@@ -26,12 +26,12 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
 //    CurrentMesh->WakeRigidBody();
 //}
 
-bool AProjectRPGItem::PickedUp()
+void AProjectRPGItem::PickedUp()
 {
 #ifdef UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Item");
 #endif
-    SetMeshType(equipedMesh);
+    SetMeshType(none);
 }
 
 void AProjectRPGItem::SetMeshType(MeshType type)

@@ -33,6 +33,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Item)
+        TSubobjectPtr<class UMaterial> Icon;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
         TSubobjectPtr<class UStaticMeshComponent> DropMesh;
 
@@ -52,5 +55,5 @@ public:
         void SetMeshType(MeshType type);
 
     //virtual void BeginPlay() OVERRIDE;
-    bool PickedUp();
+    void PickedUp();
 };

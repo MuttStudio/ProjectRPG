@@ -16,7 +16,11 @@ class AProjectRPGPlayerController : public APlayerController
 public:
     virtual void ToggleMenuInputMode();
 
+    virtual void ToggleInventoryMode();
+
     bool inMenuInputMode;
+
+    bool inInventoryMode;
 
 protected:
     virtual void SetupInputComponent() OVERRIDE;

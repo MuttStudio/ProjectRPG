@@ -38,12 +38,8 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     // derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 }
 
-//////////////////////////////////////////////////////////////////////////
-// Input
-
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
-    // set up gameplay key bindings
     check(InputComponent);
 
     InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
@@ -55,10 +51,6 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
     InputComponent->BindAxis("MoveForward", this, &AProjectRPGCharacter::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &AProjectRPGCharacter::MoveRight);
 
-
-    // We have 2 versions of the rotation bindings to handle different kinds of devices differently
-    // "turn" handles devices that provide an absolute delta, such as a mouse.
-    // "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
     InputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
     InputComponent->BindAxis("TurnRate", this, &AProjectRPGCharacter::TurnAtRate);
     InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
@@ -67,31 +59,25 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 void AProjectRPGCharacter::OnFire()
 {
-    // try and fire a projectile
     if (ProjectileClass != NULL)
     {
         const FRotator SpawnRotation = GetControlRotation();
-        // MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
         const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
         UWorld* const World = GetWorld();
         if (World != NULL)
         {
-            // spawn the projectile at the muzzle
             World->SpawnActor<AProjectRPGProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
         }
     }
 
-    // try and play the sound if specified
     if (FireSound != NULL)
     {
         UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
     }
 
-    // try and play a firing animation if specified
     if (FireAnimation != NULL)
     {
-        // Get the animation object for the arms mesh
         UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
         if (AnimInstance != NULL)
         {
@@ -102,7 +88,6 @@ void AProjectRPGCharacter::OnFire()
 
 void AProjectRPGCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-    // only fire for first finger down
     if (FingerIndex == 0)
     {
         OnFire();
@@ -113,14 +98,11 @@ void AProjectRPGCharacter::MoveForward(float Value)
 {
     if (Value != 0.0f)
     {
-        // find out which way is forward
         const FRotator Rotation = GetControlRotation();
         FRotator YawRotation(Rotation.Pitch, Rotation.Yaw, 0);
 
-        // Get forward vector
         const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-        // add movement in that direction
         AddMovementInput(Direction, Value);
     }
 }
@@ -129,27 +111,22 @@ void AProjectRPGCharacter::MoveRight(float Value)
 {
     if (Value != 0.0f)
     {
-        // find out which way is right
         const FRotator Rotation = GetControlRotation();
         const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-        // Get right vector
         const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-        // add movement in that direction
         AddMovementInput(Direction, Value);
     }
 }
 
 void AProjectRPGCharacter::TurnAtRate(float Rate)
 {
-    // calculate delta for this frame from the rate information
     AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AProjectRPGCharacter::LookUpAtRate(float Rate)
 {
-    // calculate delta for this frame from the rate information
     AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -160,12 +137,11 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     FVector CamLoc;
     FRotator CamRot;
 
-    Controller->GetPlayerViewPoint(CamLoc, CamRot); // Get the camera position and rotation
-    const FVector StartTrace = CamLoc; // trace start is the camera location
+    Controller->GetPlayerViewPoint(CamLoc, CamRot);
+    const FVector StartTrace = CamLoc;
     const FVector Direction = CamRot.Vector();
     const FVector EndTrace = StartTrace + Direction * 200;
 
-    // Perform trace to retrieve hit info
     FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
     TraceParams.bTraceAsyncScene = true;
     TraceParams.bReturnPhysicalMaterial = true;
@@ -173,7 +149,7 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     FHitResult Hit(ForceInit);
     if (GetWorld()->LineTraceSingle(Hit, StartTrace, EndTrace, ECC_WorldStatic, TraceParams))
     {
-        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor()); // typecast to the item class to the hit actor
+        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor());
         if (bDrawDebugViewTrace)
         {
             DrawDebugLine(
@@ -188,9 +164,9 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
                 );
         }
 
-        if (NewItem) // if we hit an item with the trace
+        if (NewItem)
         {
-            this->PickUpItem(NewItem); // pick it up
+            this->PickUpItem(NewItem);
         }
     }
 }
@@ -202,10 +178,9 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
 #endif
     if (Item)
     {
-        if (Item->PickedUp()) // hide mesh
-        {
-            ItemInventory.Add(Item); // add it to the array
-        }
+        Item->PickedUp();
+        ItemInventory.Add(Item);
+        Item->Destroy();
     }
 
 #ifdef UE_BUILD_DEBUG
