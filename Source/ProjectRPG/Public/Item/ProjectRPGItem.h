@@ -11,7 +11,8 @@ UENUM(BlueprintType)
 enum MeshType
 {
     dropedMesh UMETA(DisplayName = "Drop Mesh"),
-    equipedMesh UMETA(DisplayName = "Equip Mesh")
+    equipedMesh UMETA(DisplayName = "Equip Mesh"),
+    none UMETA(DisplayName = "Stashed")
 };
 
 UCLASS()
@@ -32,6 +33,12 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
+        TSubobjectPtr<class UStaticMeshComponent> DropMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
+        TSubobjectPtr<class UStaticMeshComponent> EquipMesh;
+
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Used"))
         virtual void Used();
 
@@ -45,5 +52,5 @@ public:
         void SetMeshType(MeshType type);
 
     //virtual void BeginPlay() OVERRIDE;
-    void PickedUp();
+    bool PickedUp();
 };

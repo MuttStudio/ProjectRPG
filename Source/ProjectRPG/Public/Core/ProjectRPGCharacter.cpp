@@ -197,12 +197,21 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
 
 void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
 {
+#ifdef UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picking up from Character");
+#endif
     if (Item)
     {
-        AProjectRPGConsumable* t = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-        ItemInventory.Add(t); // add it to the array
-        Item->PickedUp(); // hide mesh 
+        if (Item->PickedUp()) // hide mesh
+        {
+            ItemInventory.Add(Item); // add it to the array
+        }
     }
+
+#ifdef UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Character");
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
+#endif
 }
 
 TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
