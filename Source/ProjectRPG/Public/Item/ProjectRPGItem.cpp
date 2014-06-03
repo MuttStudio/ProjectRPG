@@ -15,8 +15,6 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     DropMesh->AttachParent = EquipMesh;
     DropMesh->bCastDynamicShadow = false;
     DropMesh->CastShadow = false;
-
-    Icon = PCIP.CreateDefaultSubobject<UMaterial>(this, TEXT("Icon"));
 }
 
 //void AProjectRPGItem::BeginPlay()
