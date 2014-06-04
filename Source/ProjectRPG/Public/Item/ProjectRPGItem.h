@@ -34,6 +34,12 @@ public:
         int32 Value;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 InventoryCols;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 InventoryRows;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         UMaterial* Icon;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
