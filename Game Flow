@@ -1,134 +1,108 @@
 {
-  "title": "Intro with backstory",
+  "title": "Game Flow",
   "id": 1,
   "formatVersion": 2,
   "ideas": {
     "1": {
-      "title": "Region 1",
-      "id": 2,
+      "title": "Intro with backstory",
+      "id": 48,
       "ideas": {
         "1": {
-          "title": "Side Quests",
-          "id": 9,
-          "attr": {
-            "style": {
-              "background": "#333300"
-            }
-          },
+          "title": "mount st mitchell",
+          "id": 2,
           "ideas": {
             "1": {
-              "title": "Help build a guard tower",
-              "id": 18,
+              "title": "Side Quests",
+              "id": 9,
               "attr": {
                 "style": {
                   "background": "#333300"
+                }
+              },
+              "ideas": {
+                "1": {
+                  "title": "Help build a guard tower",
+                  "id": 18,
+                  "attr": {
+                    "style": {
+                      "background": "#333300"
+                    }
+                  }
+                },
+                "2": {
+                  "title": "Repair the blacksmith shop",
+                  "id": 19,
+                  "attr": {
+                    "style": {
+                      "background": "#333300"
+                    }
+                  }
+                },
+                "3": {
+                  "title": "Add walls to one of the towns",
+                  "id": 20,
+                  "attr": {
+                    "style": {
+                      "background": "#333300"
+                    }
+                  }
                 }
               }
             },
             "2": {
-              "title": "Repair the blacksmith shop",
-              "id": 19,
-              "attr": {
-                "style": {
-                  "background": "#333300"
-                }
-              }
-            },
-            "3": {
-              "title": "Add walls to one of the towns",
-              "id": 20,
-              "attr": {
-                "style": {
-                  "background": "#333300"
-                }
-              }
-            }
-          }
-        },
-        "2": {
-          "title": "Main Quests",
-          "id": 15,
-          "ideas": {
-            "1": {
-              "title": "Scout out Venrok base locations",
-              "id": 21,
+              "title": "Main Quests",
+              "id": 15,
               "ideas": {
                 "1": {
-                  "title": "Destroy base 1",
-                  "id": 22,
+                  "title": "Scout out Venrok base locations",
+                  "id": 21,
                   "ideas": {
                     "1": {
-                      "title": "Sabotage base 2",
-                      "id": 23,
-                      "attr": {
-                        "style": {
-                          "background": "#333300"
-                        }
-                      },
+                      "title": "Destroy base 1",
+                      "id": 22,
                       "ideas": {
                         "1": {
-                          "title": "Region 2",
-                          "id": 24,
+                          "title": "Sabotage base 2",
+                          "id": 23,
+                          "attr": {
+                            "style": {
+                              "background": "#333300"
+                            }
+                          },
                           "ideas": {
                             "1": {
-                              "title": "Side Quests",
-                              "id": 25,
+                              "title": "sherwood forest",
+                              "id": 24,
                               "ideas": {
                                 "1": {
-                                  "title": "Build traps",
-                                  "id": 27,
-                                  "attr": {
-                                    "style": {
-                                      "background": "#666699"
-                                    }
-                                  }
-                                },
-                                "2": {
-                                  "title": "Repair the alchemy shop",
-                                  "id": 28,
-                                  "attr": {
-                                    "style": {
-                                      "background": "#666699"
-                                    }
-                                  },
-                                  "ideas": {}
-                                },
-                                "3": {
-                                  "title": "Build hidden passages",
-                                  "id": 29,
-                                  "attr": {
-                                    "style": {
-                                      "background": "#666699"
-                                    }
-                                  }
-                                }
-                              },
-                              "attr": {
-                                "style": {
-                                  "background": "#666699"
-                                }
-                              }
-                            },
-                            "2": {
-                              "title": "Main Quests",
-                              "id": 26,
-                              "ideas": {
-                                "1": {
-                                  "title": "Find an approach to the large Venrok base nearby",
-                                  "id": 30,
+                                  "title": "Side Quests",
+                                  "id": 25,
                                   "ideas": {
                                     "1": {
-                                      "title": "Attack the base",
-                                      "id": 31,
+                                      "title": "Build traps",
+                                      "id": 27,
+                                      "attr": {
+                                        "style": {
+                                          "background": "#666699"
+                                        }
+                                      }
+                                    },
+                                    "2": {
+                                      "title": "Repair the alchemy shop",
+                                      "id": 28,
                                       "attr": {
                                         "style": {
                                           "background": "#666699"
                                         }
                                       },
-                                      "ideas": {
-                                        "1": {
-                                          "title": "Region 3",
-                                          "id": 32
+                                      "ideas": {}
+                                    },
+                                    "3": {
+                                      "title": "Build hidden passages",
+                                      "id": 29,
+                                      "attr": {
+                                        "style": {
+                                          "background": "#666699"
                                         }
                                       }
                                     }
@@ -138,6 +112,148 @@
                                       "background": "#666699"
                                     }
                                   }
+                                },
+                                "2": {
+                                  "title": "Main Quests",
+                                  "id": 26,
+                                  "ideas": {
+                                    "1": {
+                                      "title": "Find an approach to the large Venrok base nearby",
+                                      "id": 30,
+                                      "ideas": {
+                                        "1": {
+                                          "title": "Attack the base",
+                                          "id": 31,
+                                          "attr": {
+                                            "style": {
+                                              "background": "#666699"
+                                            }
+                                          },
+                                          "ideas": {
+                                            "1": {
+                                              "title": "Greenland",
+                                              "id": 32,
+                                              "ideas": {
+                                                "1": {
+                                                  "title": "Side Quests",
+                                                  "id": 36,
+                                                  "ideas": {
+                                                    "1": {
+                                                      "title": "Build underground locations",
+                                                      "id": 39,
+                                                      "attr": {
+                                                        "style": {
+                                                          "background": "#008080"
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "attr": {
+                                                    "style": {
+                                                      "background": "#008080"
+                                                    }
+                                                  }
+                                                },
+                                                "2": {
+                                                  "title": "Main Quests",
+                                                  "id": 37,
+                                                  "ideas": {
+                                                    "1": {
+                                                      "title": "Free hostages",
+                                                      "id": 43,
+                                                      "ideas": {
+                                                        "1": {
+                                                          "title": "Takeover base",
+                                                          "id": 44,
+                                                          "ideas": {
+                                                            "1": {
+                                                              "title": "Begin planning assault on the big Venrok base",
+                                                              "id": 46,
+                                                              "ideas": {
+                                                                "1": {
+                                                                  "title": "Final assault on the major Venrok base in this part of the world",
+                                                                  "id": 47,
+                                                                  "attr": {
+                                                                    "style": {
+                                                                      "background": "#ff0000"
+                                                                    }
+                                                                  },
+                                                                  "ideas": {
+                                                                    "1": {
+                                                                      "title": "At this point the fight isn't truly over. You have done a lot and fought big battles but you have only defended one part of the globe. In future expansions add more regions and progress the story to the point where the Venrok are pushed off of earh",
+                                                                      "id": 49
+                                                                    }
+                                                                  }
+                                                                }
+                                                              },
+                                                              "attr": {
+                                                                "style": {
+                                                                  "background": "#008080"
+                                                                }
+                                                              }
+                                                            }
+                                                          },
+                                                          "attr": {
+                                                            "style": {
+                                                              "background": "#008080"
+                                                            }
+                                                          }
+                                                        }
+                                                      },
+                                                      "attr": {
+                                                        "style": {
+                                                          "background": "#008080"
+                                                        }
+                                                      }
+                                                    }
+                                                  },
+                                                  "attr": {
+                                                    "style": {
+                                                      "background": "#008080"
+                                                    }
+                                                  }
+                                                },
+                                                "3": {
+                                                  "title": "Defend Against Attack",
+                                                  "id": 38,
+                                                  "attr": {
+                                                    "style": {
+                                                      "background": "#008080"
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "attr": {
+                                                "style": {
+                                                  "background": "#008080"
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      },
+                                      "attr": {
+                                        "style": {
+                                          "background": "#666699"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "attr": {
+                                    "style": {
+                                      "background": "#666699"
+                                    }
+                                  }
+                                },
+                                "3": {
+                                  "title": "Defend against attack",
+                                  "id": 34,
+                                  "attr": {
+                                    "style": {
+                                      "background": "#666699"
+                                    }
+                                  },
+                                  "ideas": {}
                                 }
                               },
                               "attr": {
@@ -145,23 +261,13 @@
                                   "background": "#666699"
                                 }
                               }
-                            },
-                            "3": {
-                              "title": "Defend against attack",
-                              "id": 34,
-                              "attr": {
-                                "style": {
-                                  "background": "#666699"
-                                }
-                              },
-                              "ideas": {}
-                            }
-                          },
-                          "attr": {
-                            "style": {
-                              "background": "#666699"
                             }
                           }
+                        }
+                      },
+                      "attr": {
+                        "style": {
+                          "background": "#333300"
                         }
                       }
                     }
@@ -178,6 +284,15 @@
                   "background": "#333300"
                 }
               }
+            },
+            "3": {
+              "title": "Defend against attack",
+              "attr": {
+                "style": {
+                  "background": "#333300"
+                }
+              },
+              "id": 35
             }
           },
           "attr": {
@@ -185,20 +300,11 @@
               "background": "#333300"
             }
           }
-        },
-        "3": {
-          "title": "Defend against attack",
-          "attr": {
-            "style": {
-              "background": "#333300"
-            }
-          },
-          "id": 35
         }
       },
       "attr": {
         "style": {
-          "background": "#333300"
+          "background": "#ffff00"
         }
       }
     }
@@ -218,6 +324,17 @@
     {
       "ideaIdFrom": 25,
       "ideaIdTo": 34,
+      "attr": {
+        "style": {
+          "color": "#000000",
+          "lineStyle": "dashed",
+          "arrow": true
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 36,
+      "ideaIdTo": 38,
       "attr": {
         "style": {
           "color": "#000000",
