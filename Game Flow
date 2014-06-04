@@ -46,6 +46,15 @@
                       "background": "#333300"
                     }
                   }
+                },
+                "4": {
+                  "title": "Go into some instances and kill trash mobs to make the instances easier to handle for the NPCs",
+                  "id": 51,
+                  "attr": {
+                    "style": {
+                      "background": "#333300"
+                    }
+                  }
                 }
               }
             },
@@ -105,6 +114,15 @@
                                           "background": "#666699"
                                         }
                                       }
+                                    },
+                                    "4": {
+                                      "title": "Go into some instances and kill some things",
+                                      "id": 52,
+                                      "attr": {
+                                        "style": {
+                                          "background": "#666699"
+                                        }
+                                      }
                                     }
                                   },
                                   "attr": {
@@ -143,14 +161,23 @@
                                                       "id": 39,
                                                       "attr": {
                                                         "style": {
-                                                          "background": "#008080"
+                                                          "background": "#339966"
+                                                        }
+                                                      }
+                                                    },
+                                                    "2": {
+                                                      "title": "Go into some instances and kill Venrok that are camping out in the area",
+                                                      "id": 50,
+                                                      "attr": {
+                                                        "style": {
+                                                          "background": "#339966"
                                                         }
                                                       }
                                                     }
                                                   },
                                                   "attr": {
                                                     "style": {
-                                                      "background": "#008080"
+                                                      "background": "#339966"
                                                     }
                                                   }
                                                 },
@@ -181,35 +208,40 @@
                                                                   "ideas": {
                                                                     "1": {
                                                                       "title": "At this point the fight isn't truly over. You have done a lot and fought big battles but you have only defended one part of the globe. In future expansions add more regions and progress the story to the point where the Venrok are pushed off of earh",
-                                                                      "id": 49
+                                                                      "id": 49,
+                                                                      "attr": {
+                                                                        "style": {
+                                                                          "background": "transparent"
+                                                                        }
+                                                                      }
                                                                     }
                                                                   }
                                                                 }
                                                               },
                                                               "attr": {
                                                                 "style": {
-                                                                  "background": "#008080"
+                                                                  "background": "#339966"
                                                                 }
                                                               }
                                                             }
                                                           },
                                                           "attr": {
                                                             "style": {
-                                                              "background": "#008080"
+                                                              "background": "#339966"
                                                             }
                                                           }
                                                         }
                                                       },
                                                       "attr": {
                                                         "style": {
-                                                          "background": "#008080"
+                                                          "background": "#339966"
                                                         }
                                                       }
                                                     }
                                                   },
                                                   "attr": {
                                                     "style": {
-                                                      "background": "#008080"
+                                                      "background": "#339966"
                                                     }
                                                   }
                                                 },
@@ -218,14 +250,14 @@
                                                   "id": 38,
                                                   "attr": {
                                                     "style": {
-                                                      "background": "#008080"
+                                                      "background": "#339966"
                                                     }
                                                   }
                                                 }
                                               },
                                               "attr": {
                                                 "style": {
-                                                  "background": "#008080"
+                                                  "background": "#339966"
                                                 }
                                               }
                                             }
@@ -335,6 +367,39 @@
     {
       "ideaIdFrom": 36,
       "ideaIdTo": 38,
+      "attr": {
+        "style": {
+          "color": "#000000",
+          "lineStyle": "dashed",
+          "arrow": true
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 43,
+      "ideaIdTo": 38,
+      "attr": {
+        "style": {
+          "color": "#000000",
+          "lineStyle": "dashed",
+          "arrow": true
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 31,
+      "ideaIdTo": 34,
+      "attr": {
+        "style": {
+          "color": "#000000",
+          "lineStyle": "dashed",
+          "arrow": true
+        }
+      }
+    },
+    {
+      "ideaIdFrom": 23,
+      "ideaIdTo": 35,
       "attr": {
         "style": {
           "color": "#000000",
