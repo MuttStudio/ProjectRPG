@@ -40,7 +40,7 @@ public:
         int32 InventoryRows;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        UMaterial* Icon;
+        UMaterialInstance* Icon;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
         TSubobjectPtr<class UStaticMeshComponent> DropMesh;
