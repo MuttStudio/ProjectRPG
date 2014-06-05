@@ -33,11 +33,7 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        int32 InventoryCols;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        int32 InventoryRows;
+    int32 InventoryIndex;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         UMaterialInstance* Icon;
@@ -56,6 +52,12 @@ public:
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         bool isStackable;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 MaxStackSize;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 StackSize;
 
     UFUNCTION(BlueprintCallable, Category = Item, meta = (FriendlyName = "Item: Change Mesh"))
         void SetMeshType(MeshType type);

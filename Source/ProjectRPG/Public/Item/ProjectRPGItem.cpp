@@ -15,9 +15,6 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     DropMesh->AttachParent = EquipMesh;
     DropMesh->bCastDynamicShadow = false;
     DropMesh->CastShadow = false;
-
-    InventoryRows = 1;
-    InventoryCols = 1;
 }
 
 //void AProjectRPGItem::BeginPlay()

@@ -33,8 +33,4 @@ public:
     //Used to decide if you can use this potion on a friendly target
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         bool isSharable;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        int32 maxStackSize;
-
 };

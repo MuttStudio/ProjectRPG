@@ -24,8 +24,9 @@ class AProjectRPGCharacter : public ACharacter
     void DropCurrentItem();
     void UseCurrentItem();
 
-    UFUNCTION(BlueprintPure, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inv)
-      TArray<AProjectRPGItem*> GetCurrentInventory();
+    UFUNCTION(BlueprintPure, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
+        TArray<AProjectRPGItem*> GetCurrentInventory();
+
 
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
@@ -39,6 +40,7 @@ class AProjectRPGCharacter : public ACharacter
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseTurnRate;
 
+
     /** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseLookUpRate;
@@ -46,6 +48,14 @@ class AProjectRPGCharacter : public ACharacter
     /** Gun muzzle's offset from the characters location */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         FVector GunOffset;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Inventory)
+        int32 InventoryBagSize;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
+        int32 InventoryBags;
+
+    TArray<bool> InventoryGrid;
 
     /** Projectile class to spawn */
     UPROPERTY(EditDefaultsOnly, Category = Projectile)
@@ -63,6 +73,10 @@ protected:
 
     /** Handler for a touch input beginning. */
     void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
+
+    bool TryInsertNonStackableItem(AProjectRPGItem* Item);
+
+    bool TryInsertStackableItem(AProjectRPGItem* Item);
 
     /** Fires a projectile. */
     void OnFire();

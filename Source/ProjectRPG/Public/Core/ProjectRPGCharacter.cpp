@@ -36,6 +36,9 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     // Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
     // derived blueprint asset named MyCharacter (to avoid direct content references in C++)
+
+    InventoryBagSize = 20;
+    InventoryBags = 1;
 }
 
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -178,17 +181,59 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
 #endif
     if (Item)
     {
-        Item->PickedUp();
-        ItemInventory.Add(Item);
-        Item->Destroy();
+        if ((Item->isStackable && TryInsertStackableItem(Item)) || TryInsertNonStackableItem(Item))
+        {
+            Item->PickedUp();
+            ItemInventory.Add(Item);
+            Item->GetRootComponent()->GetChildComponent(0)->DestroyComponent();
+        }
+        else
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Inventory full");
+        }
+    }
+#ifdef UE_BUILD_DEBUG
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Could not pick up item");
     }
 
-#ifdef UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Character");
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
 #endif
+
 }
 
+bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
+{
+    if (Item)
+    {
+        if (Item->isStackable)
+        {
+            for (int i = 0; i < ItemInventory.Num(); i++)
+            {
+                if (ItemInventory[i]->StackSize < ItemInventory[i]->MaxStackSize)
+                {
+                    ItemInventory[i]->StackSize++;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool AProjectRPGCharacter::TryInsertNonStackableItem(AProjectRPGItem* Item)
+{
+    if (Item && ItemInventory.Num() < InventoryBags * InventoryBagSize)
+    {
+        ItemInventory.Add(Item);
+        return true;
+    }
+
+    return false;
+}
 TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
 {
     return ItemInventory;
