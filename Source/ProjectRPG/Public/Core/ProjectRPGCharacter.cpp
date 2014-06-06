@@ -185,7 +185,6 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
         {
             Item->PickedUp();
             ItemInventory.Add(Item);
-            Item->GetRootComponent()->GetChildComponent(0)->DestroyComponent();
         }
         else
         {
@@ -228,7 +227,6 @@ bool AProjectRPGCharacter::TryInsertNonStackableItem(AProjectRPGItem* Item)
 {
     if (Item && ItemInventory.Num() < InventoryBags * InventoryBagSize)
     {
-        ItemInventory.Add(Item);
         return true;
     }
 

@@ -40,19 +40,32 @@ void AProjectRPGItem::SetMeshType(MeshType type)
 #ifdef UE_BUILD_DEBUG
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding drop equip mesh");
 #endif
-        EquipMesh->SetVisibility(false, false);
-        DropMesh->SetVisibility(true, false);
+        if (EquipMesh)
+        {
+            EquipMesh->DestroyComponent();
+        }
         break;
     case equipedMesh:
 #ifdef UE_BUILD_DEBUG
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding drop drop mesh");
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding drop mesh");
 #endif
-        EquipMesh->SetVisibility(true, false);
-        DropMesh->SetVisibility(false, false);
+        if (DropMesh)
+        {
+            DropMesh->DestroyComponent();
+        }
         break;
     case none:
-        EquipMesh->SetVisibility(false, false);
-        DropMesh->SetVisibility(false, false);
+#ifdef UE_BUILD_DEBUG
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding all meshes");
+#endif
+        if (EquipMesh)
+        {
+            EquipMesh->DestroyComponent();
+        }
+        if (DropMesh)
+        {
+            DropMesh->DestroyComponent();
+        }
         break;
     default:
         break;
