@@ -237,6 +237,13 @@ TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
     return ItemInventory;
 }
 
+void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)
+{
+    AProjectRPGItem* first = ItemInventory[item1];
+    ItemInventory[item1] = ItemInventory[item2];
+    ItemInventory[item2] = first;
+}
+
 void AProjectRPGCharacter::DropCurrentItem()
 {
     AProjectRPGCharacter::OnFire();

@@ -28,6 +28,9 @@ class AProjectRPGCharacter : public ACharacter
         TArray<AProjectRPGItem*> GetCurrentInventory();
 
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item", CompactNodeTitle = "MvItm", Keywords = "Move Item"), Category = Inventory)
+        void MoveItem(int32 item1, int32 item2);
+
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
         TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
