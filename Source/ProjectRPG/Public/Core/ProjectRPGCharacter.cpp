@@ -39,6 +39,8 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     InventoryBagSize = 20;
     InventoryBags = 1;
+    ItemBar.SetNum(ItemBarSize);
+    ItemInventory.SetNum(InventoryBags * InventoryBagSize);
 }
 
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -184,7 +186,6 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
         if ((Item->isStackable && TryInsertStackableItem(Item)) || TryInsertNonStackableItem(Item))
         {
             Item->PickedUp();
-            ItemInventory.Add(Item);
         }
         else
         {
@@ -225,9 +226,14 @@ bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
 
 bool AProjectRPGCharacter::TryInsertNonStackableItem(AProjectRPGItem* Item)
 {
-    if (Item && ItemInventory.Num() < InventoryBags * InventoryBagSize)
+    for (int i = 0; i < ItemInventory.Num(); i++)
     {
-        return true;
+        if (!ItemInventory[i])
+        {
+            Item->IsValid = true;
+            ItemInventory[i] = Item;
+            return true;
+        }
     }
 
     return false;
@@ -237,11 +243,48 @@ TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
     return ItemInventory;
 }
 
+TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentItemBar()
+{
+    return ItemBar;
+}
+
+void AProjectRPGCharacter::AddItemToItemBar(int32 addIndex, int32 itemIndex)
+{
+    ItemBar[addIndex] = ItemInventory[itemIndex];
+}
+
 void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)
 {
-    AProjectRPGItem* first = ItemInventory[item1];
-    ItemInventory[item1] = ItemInventory[item2];
-    ItemInventory[item2] = first;
+    if (item1 <= ItemInventory.Num())
+    {
+        AProjectRPGItem* first = ItemInventory[item1];
+
+        if (item2 <= ItemInventory.Num())
+        {
+            ItemInventory[item1] = ItemInventory[item2];
+            ItemInventory[item2] = first;
+        }
+        else
+        {
+            ItemInventory[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
+            ItemInventory.Insert(first, item2);
+        }
+    }
+    else if (item2 <= ItemInventory.Num())
+    {
+        AProjectRPGItem* first = ItemInventory[item2];
+
+        if (item1 <= ItemInventory.Num())
+        {
+            ItemInventory[item2] = ItemInventory[item1];
+            ItemInventory[item1] = first;
+        }
+        else
+        {
+            ItemInventory[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
+            ItemInventory.Insert(first, item1);
+        }
+    }
 }
 
 void AProjectRPGCharacter::DropCurrentItem()

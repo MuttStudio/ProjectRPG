@@ -64,4 +64,7 @@ public:
 
     //virtual void BeginPlay() OVERRIDE;
     void PickedUp();
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        bool IsValid;
 };

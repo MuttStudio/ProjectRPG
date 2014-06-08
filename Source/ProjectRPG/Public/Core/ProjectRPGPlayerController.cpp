@@ -36,6 +36,9 @@ void AProjectRPGPlayerController::ToggleMenuInputMode()
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Menu Input Mode");
 #endif
 
+// reset other modes. This lets us change around from menue to menue without going back to main
+    inInventoryMode = false;
+
     inMenuInputMode = !inMenuInputMode;
 
     InputComponent->bBlockInput = inMenuInputMode;
@@ -54,6 +57,9 @@ void AProjectRPGPlayerController::ToggleInventoryMode()
 #ifdef UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Inventory Mode");
 #endif
+
+// reset other modes. This lets us change around from menue to menue without going back to main
+    inMenuInputMode = false;
 
     inInventoryMode = !inInventoryMode;
 

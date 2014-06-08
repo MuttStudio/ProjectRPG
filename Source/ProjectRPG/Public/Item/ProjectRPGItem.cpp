@@ -15,6 +15,8 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     DropMesh->AttachParent = EquipMesh;
     DropMesh->bCastDynamicShadow = false;
     DropMesh->CastShadow = false;
+
+    IsValid = false;
 }
 
 //void AProjectRPGItem::BeginPlay()

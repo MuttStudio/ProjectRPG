@@ -16,6 +16,9 @@ class AProjectRPGCharacter : public ACharacter
     UPROPERTY(EditAnywhere, Category = Inventory)
     TArray<AProjectRPGItem*> ItemInventory; // Our Inventory
 
+    UPROPERTY(EditAnywhere, Category = Inventory)
+        TArray<AProjectRPGItem*> ItemBar;
+
     bool bDrawDebugViewTrace;
 
     void Tick(float DeltaSeconds) OVERRIDE;
@@ -24,12 +27,17 @@ class AProjectRPGCharacter : public ACharacter
     void DropCurrentItem();
     void UseCurrentItem();
 
-    UFUNCTION(BlueprintPure, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
         TArray<AProjectRPGItem*> GetCurrentInventory();
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Item Bar", CompactNodeTitle = "GetItmBar", Keywords = "Get Player Item Bar"), Category = Inventory)
+        TArray<AProjectRPGItem*> GetCurrentItemBar();
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item", CompactNodeTitle = "MvItm", Keywords = "Move Item"), Category = Inventory)
         void MoveItem(int32 item1, int32 item2);
+
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Item Bar", CompactNodeTitle = "AddItmBar", Keywords = "Add Item To Item Bar"), Category = Inventory)
+        void AddItemToItemBar(int32 addIndex, int32 itemIndex);
 
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
@@ -57,6 +65,9 @@ class AProjectRPGCharacter : public ACharacter
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         int32 InventoryBags;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
+        int32 ItemBarSize;
 
     TArray<bool> InventoryGrid;
 
