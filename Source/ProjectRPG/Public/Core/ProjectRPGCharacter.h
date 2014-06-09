@@ -42,6 +42,12 @@ class AProjectRPGCharacter : public ACharacter
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Item Bar", CompactNodeTitle = "AddItmBar", Keywords = "Add Item To Item Bar"), Category = Inventory)
         void AddItemToItemBar(int32 addIndex, int32 itemIndex);
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Remove Item Bar", CompactNodeTitle = "RmvItmBar", Keywords = "Remove Item From Item Bar"), Category = Inventory)
+        void RemoveItemBarItem(int32 index);
+
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Remove Item Inventory", CompactNodeTitle = "RmvItmInv", Keywords = "Remove Item From Inventory"), Category = Inventory)
+        void RemoveItemBarInventory(int32 index);
+
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
         TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
