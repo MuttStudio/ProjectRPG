@@ -39,6 +39,7 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     InventoryBagSize = 20;
     InventoryBags = 1;
+    ItemBarSize = 10;
     ItemBar.SetNum(ItemBarSize);
     ItemInventory.SetNum(InventoryBags * InventoryBagSize);
 }
@@ -248,9 +249,44 @@ TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentItemBar()
     return ItemBar;
 }
 
-void AProjectRPGCharacter::AddItemToItemBar(int32 addIndex, int32 itemIndex)
+void AProjectRPGCharacter::AddItemToItemBar(int32 from, int32 to)
 {
-    ItemBar[addIndex] = ItemInventory[itemIndex];
+    ItemBar[to] = ItemInventory[from];
+}
+
+
+void AProjectRPGCharacter::MoveItemOnBar(int32 item1, int32 item2)
+{
+    if (item1 <= ItemBar.Num())
+    {
+        AProjectRPGItem* first = ItemBar[item1];
+
+        if (item2 <= ItemBar.Num())
+        {
+            ItemBar[item1] = ItemBar[item2];
+            ItemBar[item2] = first;
+        }
+        else
+        {
+            ItemBar[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
+            ItemBar.Insert(first, item2);
+        }
+    }
+    else if (item2 <= ItemBar.Num())
+    {
+        AProjectRPGItem* first = ItemBar[item2];
+
+        if (item1 <= ItemBar.Num())
+        {
+            ItemBar[item2] = ItemBar[item1];
+            ItemBar[item1] = first;
+        }
+        else
+        {
+            ItemBar[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
+            ItemBar.Insert(first, item1);
+        }
+    }
 }
 
 void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)

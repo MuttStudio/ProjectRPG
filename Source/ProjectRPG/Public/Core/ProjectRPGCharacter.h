@@ -36,6 +36,9 @@ class AProjectRPGCharacter : public ACharacter
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item", CompactNodeTitle = "MvItm", Keywords = "Move Item"), Category = Inventory)
         void MoveItem(int32 item1, int32 item2);
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item On Bar", CompactNodeTitle = "MvItmBar", Keywords = "Move Item Bar"), Category = Inventory)
+        void MoveItemOnBar(int32 from, int32 to);
+
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Item Bar", CompactNodeTitle = "AddItmBar", Keywords = "Add Item To Item Bar"), Category = Inventory)
         void AddItemToItemBar(int32 addIndex, int32 itemIndex);
 
