@@ -252,13 +252,13 @@ TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentItemBar()
 void AProjectRPGCharacter::RemoveItemBarItem(int32 index)
 {
     ItemBar.RemoveAt(index);
-    ItemBar.InsertUninitialized(index);
+    ItemBar.InsertZeroed(index);
 }
 
 void AProjectRPGCharacter::RemoveItemBarInventory(int32 index)
 {
     ItemInventory.RemoveAt(index);
-    ItemInventory.InsertUninitialized(index);
+    ItemInventory.InsertZeroed(index);
 }
 
 void AProjectRPGCharacter::AddItemToItemBar(int32 from, int32 to)
