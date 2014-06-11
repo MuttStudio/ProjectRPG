@@ -24,7 +24,6 @@ class AProjectRPGCharacter : public ACharacter
     void Tick(float DeltaSeconds) OVERRIDE;
 
     void PickUpItem(AProjectRPGItem* Item);
-    void DropCurrentItem();
     void UseCurrentItem();
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
@@ -46,7 +45,7 @@ class AProjectRPGCharacter : public ACharacter
         void RemoveItemBarItem(int32 index);
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Remove Item Inventory", CompactNodeTitle = "RmvItmInv", Keywords = "Remove Item From Inventory"), Category = Inventory)
-        void RemoveItemBarInventory(int32 index);
+        void RemoveItemFromInventory(int32 index);
 
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
@@ -59,7 +58,6 @@ class AProjectRPGCharacter : public ACharacter
     /** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseTurnRate;
-
 
     /** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -77,8 +75,6 @@ class AProjectRPGCharacter : public ACharacter
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         int32 ItemBarSize;
-
-    TArray<bool> InventoryGrid;
 
     /** Projectile class to spawn */
     UPROPERTY(EditDefaultsOnly, Category = Projectile)

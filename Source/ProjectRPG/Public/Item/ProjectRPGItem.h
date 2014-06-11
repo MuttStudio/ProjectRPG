@@ -50,6 +50,8 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Dropped"))
         virtual void Dropped();
 
+    void DroppedAlt(FRotator rotation, FVector vector);
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         bool isStackable;
 

@@ -49,8 +49,6 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
     check(InputComponent);
 
     InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-    InputComponent->BindAction("Drop", IE_Pressed, this, &AProjectRPGCharacter::DropCurrentItem);
-
     InputComponent->BindAction("Fire", IE_Pressed, this, &AProjectRPGCharacter::OnFire);
     InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AProjectRPGCharacter::TouchStarted);
 
@@ -255,8 +253,13 @@ void AProjectRPGCharacter::RemoveItemBarItem(int32 index)
     ItemBar.InsertZeroed(index);
 }
 
-void AProjectRPGCharacter::RemoveItemBarInventory(int32 index)
+void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
 {
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
+    const FRotator SpawnRotation = GetControlRotation();
+    const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+    ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
+    //ItemInventory[index]->Dropped();
     ItemInventory.RemoveAt(index);
     ItemInventory.InsertZeroed(index);
 }
@@ -333,16 +336,4 @@ void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)
             ItemInventory.Insert(first, item1);
         }
     }
-}
-
-void AProjectRPGCharacter::DropCurrentItem()
-{
-    AProjectRPGCharacter::OnFire();
-    AProjectRPGConsumable* testItem = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-    ItemInventory.Add(testItem);
-
-#ifdef UE_BUILD_DEBUG
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Testing");
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
-#endif
 }

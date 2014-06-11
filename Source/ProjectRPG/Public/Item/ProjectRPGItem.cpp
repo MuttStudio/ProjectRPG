@@ -34,13 +34,28 @@ void AProjectRPGItem::PickedUp()
     SetMeshType(none);
 }
 
+void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
+{
+    TSubclassOf<class AProjectRPGItem> ItemClass;
+    UWorld* const world = GetWorld();
+    if (world)
+    {
+        SetMeshType(dropedMesh);
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping from item");
+        FActorSpawnParameters SpawnParams;
+        SpawnParams.Owner = this;
+        SpawnParams.Instigator = Instigator;
+        AProjectRPGItem* const Item = world->SpawnActor<AProjectRPGItem>(ItemClass, vector, rotation, SpawnParams);
+   }
+}
+
 void AProjectRPGItem::SetMeshType(MeshType type)
 {
     switch (type)
     {
     case dropedMesh:
 #ifdef UE_BUILD_DEBUG
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding drop equip mesh");
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding equip mesh");
 #endif
         if (EquipMesh)
         {
