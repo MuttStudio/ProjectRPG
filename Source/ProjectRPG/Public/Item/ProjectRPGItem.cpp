@@ -36,17 +36,29 @@ void AProjectRPGItem::PickedUp()
 
 void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
 {
+    vector = vector + rotation.RotateVector(FVector(100.0f, 30.0f, 10.0f));
     TSubclassOf<class AProjectRPGItem> ItemClass;
     UWorld* const world = GetWorld();
     if (world)
     {
         SetMeshType(dropedMesh);
+
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping from item");
+
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(rotation.Pitch));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(rotation.Roll));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(rotation.Yaw));
+
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(vector.X));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(vector.Y));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(vector.Z));
+
         FActorSpawnParameters SpawnParams;
         SpawnParams.Owner = this;
         SpawnParams.Instigator = Instigator;
-        AProjectRPGItem* const Item = world->SpawnActor<AProjectRPGItem>(ItemClass, vector, rotation, SpawnParams);
-   }
+
+        AProjectRPGItem* const Item = world->SpawnActor<AProjectRPGItem>(vector, rotation, SpawnParams);
+    }
 }
 
 void AProjectRPGItem::SetMeshType(MeshType type)
