@@ -55,6 +55,7 @@ void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
 
         FActorSpawnParameters SpawnParams;
         SpawnParams.Owner = this;
+        SpawnParams.Template = this;
         SpawnParams.Instigator = Instigator;
 
         AProjectRPGItem* const Item = world->SpawnActor<AProjectRPGItem>(vector, rotation, SpawnParams);

@@ -258,8 +258,8 @@ void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
     const FRotator SpawnRotation = GetControlRotation();
     const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
-    ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
-    //ItemInventory[index]->Dropped();
+    //ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
+    ItemInventory[index]->Dropped();
     ItemInventory.RemoveAt(index);
     ItemInventory.InsertZeroed(index);
 }
