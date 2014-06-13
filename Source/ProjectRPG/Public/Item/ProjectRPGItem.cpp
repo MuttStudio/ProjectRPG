@@ -31,17 +31,16 @@ void AProjectRPGItem::PickedUp()
 #ifdef UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Item");
 #endif
-    SetMeshType(none);
+    //SetMeshType(none);
 }
 
 void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
 {
-    vector = vector + rotation.RotateVector(FVector(100.0f, 30.0f, 10.0f));
-    TSubclassOf<class AProjectRPGItem> ItemClass;
+    UClass* theClass = this->GetClass();
     UWorld* const world = GetWorld();
     if (world)
     {
-        SetMeshType(dropedMesh);
+        //SetMeshType(dropedMesh);
 
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping from item");
 
@@ -58,7 +57,7 @@ void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
         SpawnParams.Template = this;
         SpawnParams.Instigator = Instigator;
 
-        AProjectRPGItem* const Item = world->SpawnActor<AProjectRPGItem>(vector, rotation, SpawnParams);
+        world->SpawnActor<AProjectRPGItem>(theClass, vector, rotation);
     }
 }
 

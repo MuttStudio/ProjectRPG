@@ -68,6 +68,14 @@ void AProjectRPGCharacter::OnFire()
         const FRotator SpawnRotation = GetControlRotation();
         const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
 
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Pitch));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Roll));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Yaw));
+
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.X));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Y));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Z));
+
         UWorld* const World = GetWorld();
         if (World != NULL)
         {
@@ -258,8 +266,7 @@ void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
     const FRotator SpawnRotation = GetControlRotation();
     const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
-    //ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
-    ItemInventory[index]->Dropped();
+    ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
     ItemInventory.RemoveAt(index);
     ItemInventory.InsertZeroed(index);
 }
