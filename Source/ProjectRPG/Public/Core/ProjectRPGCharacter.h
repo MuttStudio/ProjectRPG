@@ -25,6 +25,7 @@ class AProjectRPGCharacter : public ACharacter
 
     void PickUpItem(AProjectRPGItem* Item);
     void UseCurrentItem();
+    void TryRemoveFromItemBar(AProjectRPGItem* Item);
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
         TArray<AProjectRPGItem*> GetCurrentInventory();

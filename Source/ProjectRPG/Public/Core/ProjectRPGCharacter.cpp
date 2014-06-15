@@ -261,12 +261,24 @@ void AProjectRPGCharacter::RemoveItemBarItem(int32 index)
     ItemBar.InsertZeroed(index);
 }
 
+void AProjectRPGCharacter::TryRemoveFromItemBar(AProjectRPGItem* Item)
+{
+    for (int i = 0; i < ItemBar.Num(); i++)
+    {
+        if (ItemBar[i] == Item)
+        {
+            RemoveItemBarItem(i);
+        }
+    }
+}
+
 void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
 {
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
     const FRotator SpawnRotation = GetControlRotation();
     const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
     ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
+    TryRemoveFromItemBar(ItemInventory[index]);
     ItemInventory.RemoveAt(index);
     ItemInventory.InsertZeroed(index);
 }
