@@ -36,29 +36,25 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     // Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
     // derived blueprint asset named MyCharacter (to avoid direct content references in C++)
-}
 
-//////////////////////////////////////////////////////////////////////////
-// Input
+    InventoryBagSize = 20;
+    InventoryBags = 1;
+    ItemBarSize = 10;
+    ItemBar.SetNum(ItemBarSize);
+    ItemInventory.SetNum(InventoryBags * InventoryBagSize);
+}
 
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
 {
-    // set up gameplay key bindings
     check(InputComponent);
 
     InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
-    InputComponent->BindAction("Drop", IE_Pressed, this, &AProjectRPGCharacter::DropCurrentItem);
-
     InputComponent->BindAction("Fire", IE_Pressed, this, &AProjectRPGCharacter::OnFire);
     InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AProjectRPGCharacter::TouchStarted);
 
     InputComponent->BindAxis("MoveForward", this, &AProjectRPGCharacter::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &AProjectRPGCharacter::MoveRight);
 
-
-    // We have 2 versions of the rotation bindings to handle different kinds of devices differently
-    // "turn" handles devices that provide an absolute delta, such as a mouse.
-    // "turnrate" is for devices that we choose to treat as a rate of change, such as an analog joystick
     InputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
     InputComponent->BindAxis("TurnRate", this, &AProjectRPGCharacter::TurnAtRate);
     InputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
@@ -67,31 +63,33 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 void AProjectRPGCharacter::OnFire()
 {
-    // try and fire a projectile
     if (ProjectileClass != NULL)
     {
         const FRotator SpawnRotation = GetControlRotation();
-        // MuzzleOffset is in camera space, so transform it to world space before offsetting from the character location to find the final muzzle position
         const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Pitch));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Roll));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Yaw));
+
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.X));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Y));
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Z));
 
         UWorld* const World = GetWorld();
         if (World != NULL)
         {
-            // spawn the projectile at the muzzle
             World->SpawnActor<AProjectRPGProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
         }
     }
 
-    // try and play the sound if specified
     if (FireSound != NULL)
     {
         UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
     }
 
-    // try and play a firing animation if specified
     if (FireAnimation != NULL)
     {
-        // Get the animation object for the arms mesh
         UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
         if (AnimInstance != NULL)
         {
@@ -102,7 +100,6 @@ void AProjectRPGCharacter::OnFire()
 
 void AProjectRPGCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
 {
-    // only fire for first finger down
     if (FingerIndex == 0)
     {
         OnFire();
@@ -113,14 +110,11 @@ void AProjectRPGCharacter::MoveForward(float Value)
 {
     if (Value != 0.0f)
     {
-        // find out which way is forward
         const FRotator Rotation = GetControlRotation();
         FRotator YawRotation(Rotation.Pitch, Rotation.Yaw, 0);
 
-        // Get forward vector
         const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
 
-        // add movement in that direction
         AddMovementInput(Direction, Value);
     }
 }
@@ -129,27 +123,22 @@ void AProjectRPGCharacter::MoveRight(float Value)
 {
     if (Value != 0.0f)
     {
-        // find out which way is right
         const FRotator Rotation = GetControlRotation();
         const FRotator YawRotation(0, Rotation.Yaw, 0);
 
-        // Get right vector
         const FVector Direction = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
 
-        // add movement in that direction
         AddMovementInput(Direction, Value);
     }
 }
 
 void AProjectRPGCharacter::TurnAtRate(float Rate)
 {
-    // calculate delta for this frame from the rate information
     AddControllerYawInput(Rate * BaseTurnRate * GetWorld()->GetDeltaSeconds());
 }
 
 void AProjectRPGCharacter::LookUpAtRate(float Rate)
 {
-    // calculate delta for this frame from the rate information
     AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
@@ -160,12 +149,11 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     FVector CamLoc;
     FRotator CamRot;
 
-    Controller->GetPlayerViewPoint(CamLoc, CamRot); // Get the camera position and rotation
-    const FVector StartTrace = CamLoc; // trace start is the camera location
+    Controller->GetPlayerViewPoint(CamLoc, CamRot);
+    const FVector StartTrace = CamLoc;
     const FVector Direction = CamRot.Vector();
     const FVector EndTrace = StartTrace + Direction * 200;
 
-    // Perform trace to retrieve hit info
     FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
     TraceParams.bTraceAsyncScene = true;
     TraceParams.bReturnPhysicalMaterial = true;
@@ -173,7 +161,7 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     FHitResult Hit(ForceInit);
     if (GetWorld()->LineTraceSingle(Hit, StartTrace, EndTrace, ECC_WorldStatic, TraceParams))
     {
-        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor()); // typecast to the item class to the hit actor
+        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor());
         if (bDrawDebugViewTrace)
         {
             DrawDebugLine(
@@ -188,36 +176,183 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
                 );
         }
 
-        if (NewItem) // if we hit an item with the trace
+        if (NewItem)
         {
-            this->PickUpItem(NewItem); // pick it up
+            this->PickUpItem(NewItem);
         }
     }
 }
 
 void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
 {
+#ifdef UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picking up from Character");
+#endif
     if (Item)
     {
-        AProjectRPGConsumable* t = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-        ItemInventory.Add(t); // add it to the array
-        Item->PickedUp(); // hide mesh 
+        if ((Item->isStackable && TryInsertStackableItem(Item)) || TryInsertNonStackableItem(Item))
+        {
+            Item->PickedUp();
+        }
+        else
+        {
+            GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Inventory full");
+        }
     }
+#ifdef UE_BUILD_DEBUG
+    else
+    {
+        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Could not pick up item");
+    }
+
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Character");
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
+#endif
+
 }
 
+bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
+{
+    if (Item)
+    {
+        if (Item->isStackable)
+        {
+            for (int i = 0; i < ItemInventory.Num(); i++)
+            {
+                if (ItemInventory[i]->StackSize < ItemInventory[i]->MaxStackSize)
+                {
+                    ItemInventory[i]->StackSize++;
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+bool AProjectRPGCharacter::TryInsertNonStackableItem(AProjectRPGItem* Item)
+{
+    for (int i = 0; i < ItemInventory.Num(); i++)
+    {
+        if (!ItemInventory[i])
+        {
+            Item->IsValid = true;
+            ItemInventory[i] = Item;
+            return true;
+        }
+    }
+
+    return false;
+}
 TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentInventory()
 {
     return ItemInventory;
 }
 
-void AProjectRPGCharacter::DropCurrentItem()
+TArray<AProjectRPGItem*> AProjectRPGCharacter::GetCurrentItemBar()
 {
-    AProjectRPGCharacter::OnFire();
-    AProjectRPGConsumable* testItem = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-    ItemInventory.Add(testItem);
+    return ItemBar;
+}
 
-#ifdef UE_BUILD_DEBUG
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Testing");
-    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(ItemInventory.Num()));
-#endif
+void AProjectRPGCharacter::RemoveItemBarItem(int32 index)
+{
+    ItemBar.RemoveAt(index);
+    ItemBar.InsertZeroed(index);
+}
+
+void AProjectRPGCharacter::TryRemoveFromItemBar(AProjectRPGItem* Item)
+{
+    for (int i = 0; i < ItemBar.Num(); i++)
+    {
+        if (ItemBar[i] == Item)
+        {
+            RemoveItemBarItem(i);
+        }
+    }
+}
+
+void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
+{
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
+    const FRotator SpawnRotation = GetControlRotation();
+    const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+    ItemInventory[index]->DroppedAlt(SpawnRotation, SpawnLocation);
+    TryRemoveFromItemBar(ItemInventory[index]);
+    ItemInventory.RemoveAt(index);
+    ItemInventory.InsertZeroed(index);
+}
+
+void AProjectRPGCharacter::AddItemToItemBar(int32 from, int32 to)
+{
+    ItemBar[to] = ItemInventory[from];
+}
+
+
+void AProjectRPGCharacter::MoveItemOnBar(int32 item1, int32 item2)
+{
+    if (item1 <= ItemBar.Num())
+    {
+        AProjectRPGItem* first = ItemBar[item1];
+
+        if (item2 <= ItemBar.Num())
+        {
+            ItemBar[item1] = ItemBar[item2];
+            ItemBar[item2] = first;
+        }
+        else
+        {
+            ItemBar[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
+            ItemBar.Insert(first, item2);
+        }
+    }
+    else if (item2 <= ItemBar.Num())
+    {
+        AProjectRPGItem* first = ItemBar[item2];
+
+        if (item1 <= ItemBar.Num())
+        {
+            ItemBar[item2] = ItemBar[item1];
+            ItemBar[item1] = first;
+        }
+        else
+        {
+            ItemBar[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
+            ItemBar.Insert(first, item1);
+        }
+    }
+}
+
+void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)
+{
+    if (item1 <= ItemInventory.Num())
+    {
+        AProjectRPGItem* first = ItemInventory[item1];
+
+        if (item2 <= ItemInventory.Num())
+        {
+            ItemInventory[item1] = ItemInventory[item2];
+            ItemInventory[item2] = first;
+        }
+        else
+        {
+            ItemInventory[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
+            ItemInventory.Insert(first, item2);
+        }
+    }
+    else if (item2 <= ItemInventory.Num())
+    {
+        AProjectRPGItem* first = ItemInventory[item2];
+
+        if (item1 <= ItemInventory.Num())
+        {
+            ItemInventory[item2] = ItemInventory[item1];
+            ItemInventory[item1] = first;
+        }
+        else
+        {
+            ItemInventory[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
+            ItemInventory.Insert(first, item1);
+        }
+    }
 }

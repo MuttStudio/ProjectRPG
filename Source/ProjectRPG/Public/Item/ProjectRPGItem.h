@@ -11,7 +11,8 @@ UENUM(BlueprintType)
 enum MeshType
 {
     dropedMesh UMETA(DisplayName = "Drop Mesh"),
-    equipedMesh UMETA(DisplayName = "Equip Mesh")
+    equipedMesh UMETA(DisplayName = "Equip Mesh"),
+    none UMETA(DisplayName = "Stashed")
 };
 
 UCLASS()
@@ -32,18 +33,42 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
+    int32 InventoryIndex;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        UTexture* Icon;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
+        TSubobjectPtr<class UStaticMeshComponent> DropMesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
+        TSubobjectPtr<class UStaticMeshComponent> EquipMesh;
+
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Used"))
         virtual void Used();
 
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Dropped"))
         virtual void Dropped();
 
+    void DroppedAlt(FRotator rotation, FVector vector);
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         bool isStackable;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 MaxStackSize;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        int32 StackSize;
 
     UFUNCTION(BlueprintCallable, Category = Item, meta = (FriendlyName = "Item: Change Mesh"))
         void SetMeshType(MeshType type);
 
     //virtual void BeginPlay() OVERRIDE;
     void PickedUp();
+
+    void InitParams(AProjectRPGItem* item);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        bool IsValid;
 };
