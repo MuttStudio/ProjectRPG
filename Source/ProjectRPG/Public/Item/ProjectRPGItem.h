@@ -67,6 +67,8 @@ public:
     //virtual void BeginPlay() OVERRIDE;
     void PickedUp();
 
+    void InitParams(AProjectRPGItem* item);
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         bool IsValid;
 };

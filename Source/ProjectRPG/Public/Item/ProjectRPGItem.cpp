@@ -52,14 +52,15 @@ void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(vector.Y));
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(vector.Z));
 
-        FActorSpawnParameters SpawnParams;
-        SpawnParams.Owner = this;
-        SpawnParams.Template = this;
-        SpawnParams.Instigator = Instigator;
-
         AProjectRPGItem* item = world->SpawnActor<AProjectRPGItem>(theClass, vector, rotation);
+        item->InitParams(this);
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, item->Description);
     }
+}
+
+void AProjectRPGItem::InitParams(AProjectRPGItem* item)
+{
+    this->Icon = item->Icon;
 }
 
 void AProjectRPGItem::SetMeshType(MeshType type)
