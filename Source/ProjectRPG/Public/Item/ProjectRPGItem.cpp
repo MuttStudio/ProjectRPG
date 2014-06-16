@@ -16,7 +16,7 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     DropMesh->bCastDynamicShadow = false;
     DropMesh->CastShadow = false;
 
-    IsValid = false;
+    StackSize = 1;
 }
 
 //void AProjectRPGItem::BeginPlay()
@@ -36,6 +36,9 @@ void AProjectRPGItem::PickedUp()
 
 void AProjectRPGItem::DroppedAlt(FRotator rotation, FVector vector)
 {
+    if (!IsValid(this))
+        return;
+
     UClass* theClass = this->GetClass();
     UWorld* const world = GetWorld();
     if (world)
@@ -62,6 +65,10 @@ void AProjectRPGItem::InitParams(AProjectRPGItem* item)
     this->Icon = item->Icon;
     this->Description = item->Description;
     this->Lore = item->Lore;
+    this->StackSize = item->StackSize;
+    this->isStackable = item->isStackable;
+    this->MaxStackSize = item->MaxStackSize;
+    this->ItemName = item->ItemName;
 }
 
 void AProjectRPGItem::SetMeshType(MeshType type)
