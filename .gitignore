@@ -12,3 +12,6 @@
 /DerivedDataCache
 /Intermediate
 /Saved
+*cache.txt
+*~
+*.pyc

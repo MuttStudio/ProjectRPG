@@ -88,8 +88,9 @@ void AProjectRPGQuestGiverController::Wander()
     FVector newLoc = FVector(loc.X + xrand, loc.Y + yrand, loc.Z);
 
     if ((xrand > wanderTolerance*-1 && xrand < wanderTolerance) || (yrand > wanderTolerance*-1 && yrand < wanderTolerance))
-
-    BlackboardComponent->SetValueAsVector(TargetLocationID, newLoc);
+    {
+        BlackboardComponent->SetValueAsVector(TargetLocationID, newLoc);
+    }
 }
 
 void AProjectRPGQuestGiverController::SetTarget(class APawn* InPawn)
