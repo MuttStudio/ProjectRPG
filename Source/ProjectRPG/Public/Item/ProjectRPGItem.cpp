@@ -28,7 +28,7 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
 
 void AProjectRPGItem::PickedUp()
 {
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Item");
 #endif
     SetMeshType(none);
@@ -76,7 +76,7 @@ void AProjectRPGItem::SetMeshType(MeshType type)
     switch (type)
     {
     case dropedMesh:
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding equip mesh");
 #endif
         if (EquipMesh)
@@ -85,7 +85,7 @@ void AProjectRPGItem::SetMeshType(MeshType type)
         }
         break;
     case equipedMesh:
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding drop mesh");
 #endif
         if (DropMesh)
@@ -94,7 +94,7 @@ void AProjectRPGItem::SetMeshType(MeshType type)
         }
         break;
     case none:
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Hiding all meshes");
 #endif
         if (EquipMesh)

@@ -32,7 +32,7 @@ void AProjectRPGPlayerController::SetupInputComponent()
 
 void AProjectRPGPlayerController::ToggleMenuInputMode()
 {
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Menu Input Mode");
 #endif
 
@@ -54,7 +54,7 @@ void AProjectRPGPlayerController::ToggleMenuInputMode()
 
 void AProjectRPGPlayerController::ToggleInventoryMode()
 {
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Inventory Mode");
 #endif
 

@@ -102,6 +102,7 @@ protected:
     /** Fires a projectile. */
     void OnFire();
 
+    void OnTryPickUp();
     /** Handles moving forward/backward */
     void MoveForward(float Val);
 
