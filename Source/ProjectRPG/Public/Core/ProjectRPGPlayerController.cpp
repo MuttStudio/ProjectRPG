@@ -7,6 +7,7 @@ AProjectRPGPlayerController::AProjectRPGPlayerController(const class FPostConstr
 {
     inMenuInputMode = false;
     inInventoryMode = false;
+    inSpellMode = false;
 }
 
 void AProjectRPGPlayerController::SetupInputComponent()
@@ -28,6 +29,7 @@ void AProjectRPGPlayerController::SetupInputComponent()
 
     InputComponent->BindAction("Inventory", IE_Pressed, this, &AProjectRPGPlayerController::ToggleInventoryMode);
     InputComponent->BindAction("Menu", IE_Pressed, this, &AProjectRPGPlayerController::ToggleMenuInputMode);
+    InputComponent->BindAction("Spells", IE_Pressed, this, &AProjectRPGPlayerController::ToggleSpellMode);
 }
 
 void AProjectRPGPlayerController::ToggleMenuInputMode()
@@ -37,7 +39,10 @@ void AProjectRPGPlayerController::ToggleMenuInputMode()
 #endif
 
 // reset other modes. This lets us change around from menue to menue without going back to main
-    inInventoryMode = false;
+    if (inInventoryMode)
+        ToggleInventoryMode();
+    if (inSpellMode)
+        ToggleSpellMode();
 
     inMenuInputMode = !inMenuInputMode;
 
@@ -49,7 +54,6 @@ void AProjectRPGPlayerController::ToggleMenuInputMode()
     SetIgnoreMoveInput(inMenuInputMode);
 
     Cast<AProjectRPGHUD>(MyHUD)->ShowMenu(inMenuInputMode);
-    Cast<AProjectRPGHUD>(MyHUD)->ShowMainHud(!inMenuInputMode);
 }
 
 void AProjectRPGPlayerController::ToggleInventoryMode()
@@ -59,7 +63,10 @@ void AProjectRPGPlayerController::ToggleInventoryMode()
 #endif
 
 // reset other modes. This lets us change around from menue to menue without going back to main
-    inMenuInputMode = false;
+    if (inMenuInputMode)
+        ToggleMenuInputMode();
+    if (inSpellMode)
+        ToggleSpellMode();
 
     inInventoryMode = !inInventoryMode;
 
@@ -71,5 +78,28 @@ void AProjectRPGPlayerController::ToggleInventoryMode()
     SetIgnoreMoveInput(inInventoryMode);
 
     Cast<AProjectRPGHUD>(MyHUD)->ShowInventory(inInventoryMode);
-    Cast<AProjectRPGHUD>(MyHUD)->ShowMainHud(!inInventoryMode);
+}
+
+void AProjectRPGPlayerController::ToggleSpellMode()
+{
+#if UE_BUILD_DEBUG
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Spell Mode");
+#endif
+
+// reset other modes. This lets us change around from menue to menue without going back to main
+    if (inMenuInputMode)
+        ToggleMenuInputMode();
+    if (inInventoryMode)
+        ToggleInventoryMode();
+
+    inSpellMode = !inSpellMode;
+
+    InputComponent->bBlockInput = inSpellMode;
+    bEnableClickEvents = inSpellMode;
+    bEnableMouseOverEvents = inSpellMode;
+    bShowMouseCursor = inSpellMode;
+    SetIgnoreLookInput(inSpellMode);
+    SetIgnoreMoveInput(inSpellMode);
+
+    Cast<AProjectRPGHUD>(MyHUD)->ShowSpells(inSpellMode);
 }

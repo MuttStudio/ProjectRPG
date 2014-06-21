@@ -18,9 +18,13 @@ public:
 
     virtual void ToggleInventoryMode();
 
+    virtual void ToggleSpellMode();
+
     bool inMenuInputMode;
 
     bool inInventoryMode;
+
+    bool inSpellMode;
 
 protected:
     virtual void SetupInputComponent() OVERRIDE;
