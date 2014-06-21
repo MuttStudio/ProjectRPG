@@ -61,7 +61,7 @@ void AProjectRPGItem::InitParams(AProjectRPGItem* item)
     this->StackSize = item->StackSize;
     this->isStackable = item->isStackable;
     this->MaxStackSize = item->MaxStackSize;
-    this->ItemName = item->ItemName;
+    this->ObjectName = item->ObjectName;
 }
 
 void AProjectRPGItem::SetMeshType(MeshType type)
