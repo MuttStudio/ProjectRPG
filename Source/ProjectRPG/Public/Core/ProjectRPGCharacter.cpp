@@ -11,6 +11,10 @@
 AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeProperties& PCIP)
 : Super(PCIP)
 {
+#if UE_BUILD_DEBUG
+    bDrawDebugViewTrace = true;
+#endif
+
     // Set size for collision capsule
     CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
 
@@ -49,6 +53,7 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
     check(InputComponent);
 
     InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+    InputComponent->BindAction("PickUp", IE_Pressed, this, &AProjectRPGCharacter::OnTryPickUp);
     InputComponent->BindAction("Fire", IE_Pressed, this, &AProjectRPGCharacter::OnFire);
     InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AProjectRPGCharacter::TouchStarted);
 
@@ -145,47 +150,60 @@ void AProjectRPGCharacter::LookUpAtRate(float Rate)
 void AProjectRPGCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+}
 
+void AProjectRPGCharacter::OnTryPickUp()
+{
     FVector CamLoc;
     FRotator CamRot;
 
     Controller->GetPlayerViewPoint(CamLoc, CamRot);
-    const FVector StartTrace = CamLoc;
+    const FVector StartTrace = CamLoc + CamRot.Vector() * 100;
     const FVector Direction = CamRot.Vector();
     const FVector EndTrace = StartTrace + Direction * 200;
 
     FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
     TraceParams.bTraceAsyncScene = true;
     TraceParams.bReturnPhysicalMaterial = true;
+    TraceParams.bFindInitialOverlaps = true;
+    float Radius = 150;
 
-    FHitResult Hit(ForceInit);
-    if (GetWorld()->LineTraceSingle(Hit, StartTrace, EndTrace, ECC_WorldStatic, TraceParams))
+    TArray<FHitResult> Hits;
+    TArray<AProjectRPGItem*> NewItems = TArray<AProjectRPGItem*>();
+    if (GetWorld()->SweepMulti(Hits, StartTrace, EndTrace, FQuat::Identity, ECollisionChannel::ECC_Pawn, FCollisionShape::MakeSphere(Radius), TraceParams))
     {
-        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor());
-        if (bDrawDebugViewTrace)
+        for (FHitResult& hit : Hits)
         {
-            DrawDebugLine(
-                GetWorld(),
-                StartTrace,
-                EndTrace,
-                FColor(255, 0, 0),
-                false,
-                3,
-                0,
-                1
-                );
-        }
+            AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(hit.GetActor());
+            if (bDrawDebugViewTrace)
+            {
+                DrawDebugSphere(
+                    GetWorld(),
+                    StartTrace,
+                    Radius,
+                    32,
+                    FColor(255, 0, 0),
+                    false,
+                    10.0f
+                    );
+            }
 
-        if (NewItem)
-        {
-            this->PickUpItem(NewItem);
+            if (NewItem)
+            {
+                NewItems.AddUnique(NewItem);
+            }
         }
+    }
+
+    for (AProjectRPGItem* item : NewItems)
+    {
+        PickUpItem(item);
     }
 }
 
 void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
 {
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picking up from Character");
 #endif
     if (Item)
@@ -199,7 +217,7 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
             GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow, "Inventory full");
         }
     }
-#ifdef UE_BUILD_DEBUG
+#if UE_BUILD_DEBUG
     else
     {
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "ERROR: Could not pick up item");
