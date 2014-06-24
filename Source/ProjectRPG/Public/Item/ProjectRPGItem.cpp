@@ -19,13 +19,6 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     StackSize = 1;
 }
 
-//void AProjectRPGItem::BeginPlay()
-//{
-//    Super::BeginPlay();
-//    CurrentMesh ->SetSimulatePhysics(true);
-//    CurrentMesh->WakeRigidBody();
-//}
-
 void AProjectRPGItem::PickedUp()
 {
 #if UE_BUILD_DEBUG
