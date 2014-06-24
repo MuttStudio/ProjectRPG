@@ -150,8 +150,44 @@ void AProjectRPGCharacter::LookUpAtRate(float Rate)
 void AProjectRPGCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
-}
 
+    FVector CamLoc;
+    FRotator CamRot;
+
+    Controller->GetPlayerViewPoint(CamLoc, CamRot);
+    const FVector StartTrace = CamLoc;
+    const FVector Direction = CamRot.Vector();
+    const FVector EndTrace = StartTrace + Direction * 200;
+
+    FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
+    TraceParams.bTraceAsyncScene = true;
+    TraceParams.bReturnPhysicalMaterial = true;
+    float radius = 20;
+    FHitResult Hit(ForceInit);
+    if (GetWorld()->SweepSingle(Hit, StartTrace, EndTrace, FQuat(1.0, 1.0, 1.0, 1.0), ECC_WorldStatic, FCollisionShape::MakeSphere(radius), TraceParams, FCollisionResponseParams()))
+    {
+        AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor());
+        if (bDrawDebugViewTrace)
+        {
+            DrawDebugLine(
+                GetWorld(),
+                StartTrace,
+                EndTrace,
+                FColor(255, 0, 0),
+                false,
+                3,
+                0,
+                1
+                );
+        }
+
+        DisplayItemHover(NewItem);
+    }
+    else
+    {
+        DisplayItemHover(NULL);
+    }
+}
 void AProjectRPGCharacter::OnTryPickUp()
 {
     FVector CamLoc;
