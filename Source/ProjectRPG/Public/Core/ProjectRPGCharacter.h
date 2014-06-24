@@ -27,14 +27,14 @@ class AProjectRPGCharacter : public ACharacter
     void UseCurrentItem();
     void TryRemoveFromItemBar(AProjectRPGItem* Item);
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item", CompactNodeTitle = "MvItm", Keywords = "Move Item"), Category = Inventory)
+        void MoveItem(int32 item1, int32 item2, int32 stackSize);
+
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Inv", CompactNodeTitle = "GetInv", Keywords = "Get Player Inventory"), Category = Inventory)
         TArray<AProjectRPGItem*> GetCurrentInventory();
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Get Item Bar", CompactNodeTitle = "GetItmBar", Keywords = "Get Player Item Bar"), Category = Inventory)
         TArray<AProjectRPGItem*> GetCurrentItemBar();
-
-    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item", CompactNodeTitle = "MvItm", Keywords = "Move Item"), Category = Inventory)
-        void MoveItem(int32 item1, int32 item2);
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Move Item On Bar", CompactNodeTitle = "MvItmBar", Keywords = "Move Item Bar"), Category = Inventory)
         void MoveItemOnBar(int32 from, int32 to);
@@ -90,6 +90,7 @@ class AProjectRPGCharacter : public ACharacter
         UAnimMontage* FireAnimation;
 
 protected:
+    void ReplaceItemBarItem(AProjectRPGItem* Item1, AProjectRPGItem* Item2);
 
     /** Handler for a touch input beginning. */
     void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);

@@ -219,10 +219,13 @@ bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
         {
             for (int i = 0; i < ItemInventory.Num(); i++)
             {
-                if (ItemInventory[i]->StackSize < ItemInventory[i]->MaxStackSize)
+                if (ItemInventory[i] && ItemInventory[i]->ItemName == Item->ItemName)
                 {
-                    ItemInventory[i]->StackSize++;
-                    return true;
+                    if (ItemInventory[i]->StackSize + Item->StackSize < ItemInventory[i]->MaxStackSize)
+                    {
+                        ItemInventory[i]->StackSize += Item->StackSize;
+                        return true;
+                    }
                 }
             }
         }
@@ -237,7 +240,6 @@ bool AProjectRPGCharacter::TryInsertNonStackableItem(AProjectRPGItem* Item)
     {
         if (!ItemInventory[i])
         {
-            Item->IsValid = true;
             ItemInventory[i] = Item;
             return true;
         }
@@ -272,6 +274,37 @@ void AProjectRPGCharacter::TryRemoveFromItemBar(AProjectRPGItem* Item)
     }
 }
 
+void AProjectRPGCharacter::ReplaceItemBarItem(AProjectRPGItem* Item1, AProjectRPGItem* Item2)
+{
+    int32 one = -1;
+    int32 two = -1;
+    for (int i = 0; i < ItemBar.Num(); i++)
+    {
+        if (ItemBar[i] == Item1)
+        {
+            one = i;
+        }
+        else if (ItemBar[i] == Item2)
+        {
+            two = i;
+        }
+    }
+
+    if (one >= 0 && two >= 0)
+    {
+        MoveItemOnBar(two, one);
+        TryRemoveFromItemBar(Item2);
+    }
+
+    for (int i = 0; i < ItemBar.Num(); i++)
+    {
+        if (ItemBar[i] == Item1)
+        {
+            ItemBar[i] = Item2;
+        }
+    }
+}
+
 void AProjectRPGCharacter::RemoveItemFromInventory(int32 index)
 {
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Dropping");
@@ -291,68 +324,65 @@ void AProjectRPGCharacter::AddItemToItemBar(int32 from, int32 to)
 
 void AProjectRPGCharacter::MoveItemOnBar(int32 item1, int32 item2)
 {
-    if (item1 <= ItemBar.Num())
-    {
-        AProjectRPGItem* first = ItemBar[item1];
+    if (item1 == item2)
+        return;
 
-        if (item2 <= ItemBar.Num())
-        {
-            ItemBar[item1] = ItemBar[item2];
-            ItemBar[item2] = first;
-        }
-        else
-        {
-            ItemBar[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-            ItemBar.Insert(first, item2);
-        }
-    }
-    else if (item2 <= ItemBar.Num())
-    {
-        AProjectRPGItem* first = ItemBar[item2];
-
-        if (item1 <= ItemBar.Num())
-        {
-            ItemBar[item2] = ItemBar[item1];
-            ItemBar[item1] = first;
-        }
-        else
-        {
-            ItemBar[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
-            ItemBar.Insert(first, item1);
-        }
-    }
+    AProjectRPGItem* first = ItemBar[item1];
+    ItemBar[item1] = ItemBar[item2];
+    ItemBar[item2] = first;
 }
 
-void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2)
+void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2, int32 stackSize = 0)
 {
-    if (item1 <= ItemInventory.Num())
-    {
-        AProjectRPGItem* first = ItemInventory[item1];
+    if (item1 == item2)
+        return;
 
-        if (item2 <= ItemInventory.Num())
+    if (stackSize == 0)
+    {
+        if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item2]->isStackable && ItemInventory[item1]->ItemName == ItemInventory[item2]->ItemName)
         {
+            if (ItemInventory[item1]->StackSize + ItemInventory[item2]->StackSize <= ItemInventory[item2]->MaxStackSize)
+            {
+                ItemInventory[item2]->StackSize += ItemInventory[item1]->StackSize;
+                ReplaceItemBarItem(ItemInventory[item1], ItemInventory[item2]);
+                ItemInventory.RemoveAt(item1);
+                ItemInventory.InsertZeroed(item1);
+            }
+        }
+        else
+        {
+            AProjectRPGItem* first = ItemInventory[item1];
             ItemInventory[item1] = ItemInventory[item2];
             ItemInventory[item2] = first;
         }
-        else
+    }
+    else if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item1]->ItemName == ItemInventory[item2]->ItemName && ItemInventory[item2]->StackSize + stackSize <= ItemInventory[item2]->MaxStackSize)
+    {
+        ItemInventory[item2]->StackSize += stackSize;
+        ItemInventory[item1]->StackSize -= stackSize;
+        if (ItemInventory[item1]->StackSize < 1)
         {
-            ItemInventory[item1] = GetWorld()->SpawnActor<AProjectRPGConsumable>();
-            ItemInventory.Insert(first, item2);
+            TryRemoveFromItemBar(ItemInventory[item1]);
+            ItemInventory.RemoveAt(item1);
+            ItemInventory.InsertZeroed(item1);;
         }
     }
-    else if (item2 <= ItemInventory.Num())
+    else if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && !IsValid(ItemInventory[item2]) && stackSize <= ItemInventory[item1]->MaxStackSize)
     {
-        AProjectRPGItem* first = ItemInventory[item2];
+        const FRotator SpawnRotation = GetControlRotation();
+        const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
+        AProjectRPGItem* newItem = GetWorld()->SpawnActor<AProjectRPGItem>(ItemInventory[item1]->GetClass(), SpawnLocation, SpawnRotation);
 
-        if (item1 <= ItemInventory.Num())
+        newItem->InitParams(ItemInventory[item1]);
+        newItem->SetMeshType(none);
+        newItem->StackSize = stackSize;
+        ItemInventory[item1]->StackSize -= stackSize;
+        if (ItemInventory[item1]->StackSize < 1)
         {
-            ItemInventory[item2] = ItemInventory[item1];
-            ItemInventory[item1] = first;
+            TryRemoveFromItemBar(ItemInventory[item1]);
+            ItemInventory.RemoveAt(item1);
+            ItemInventory.InsertZeroed(item1);;
         }
-        else
-        {
-            ItemInventory[item2] = GetWorld()->SpawnActor<AProjectRPGItem>();
-            ItemInventory.Insert(first, item1);
-        }
+        ItemInventory[item2] = newItem;
     }
 }
