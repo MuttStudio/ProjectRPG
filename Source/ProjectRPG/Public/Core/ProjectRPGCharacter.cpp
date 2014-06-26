@@ -244,6 +244,15 @@ bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
                         ItemInventory[i]->StackSize += Item->StackSize;
                         return true;
                     }
+                    else
+                    {
+                        Item->StackSize -= ItemInventory[i]->MaxStackSize - ItemInventory[i]->StackSize;
+                        ItemInventory[i]->StackSize = ItemInventory[i]->MaxStackSize;
+                        if (Item->StackSize == 0)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -365,6 +374,17 @@ void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2, int32 stackSize = 
                 ReplaceItemBarItem(ItemInventory[item1], ItemInventory[item2]);
                 ItemInventory.RemoveAt(item1);
                 ItemInventory.InsertZeroed(item1);
+            }
+            else if (ItemInventory[item2]->StackSize == ItemInventory[item2]->MaxStackSize && ItemInventory[item1]->StackSize < ItemInventory[item1]->MaxStackSize)
+            {
+                AProjectRPGItem* first = ItemInventory[item1];
+                ItemInventory[item1] = ItemInventory[item2];
+                ItemInventory[item2] = first;
+            }
+            else
+            {
+                ItemInventory[item1]->StackSize -= ItemInventory[item2]->MaxStackSize - ItemInventory[item2]->StackSize;
+                ItemInventory[item2]->StackSize = ItemInventory[item2]->MaxStackSize;
             }
         }
         else
