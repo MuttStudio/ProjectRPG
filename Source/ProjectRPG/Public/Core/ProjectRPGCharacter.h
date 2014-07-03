@@ -48,6 +48,9 @@ class AProjectRPGCharacter : public ACharacter
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Remove Item Inventory", CompactNodeTitle = "RmvItmInv", Keywords = "Remove Item From Inventory"), Category = Inventory)
         void RemoveItemFromInventory(int32 index);
 
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Display Hover	"))
+        virtual void DisplayItemHover(AProjectRPGItem* newItem);
+
     /** Pawn mesh: 1st person view (arms; seen only by self) */
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
         TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
