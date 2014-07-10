@@ -4,7 +4,8 @@
 #include "ProjectRPGItem.h"
 #include "ProjectRPGWeapon.h"
 #include "ProjectRPGConsumable.h"
-#include "ProjectRPGGenericItem.h"
+#include "ProjectRPGSpell.h"
+#include "ProjectRPGAlignmentSpell.h"
 #include "ProjectRPGCharacter.generated.h"
 
 UCLASS(config = Game)
@@ -13,11 +14,26 @@ class AProjectRPGCharacter : public ACharacter
     GENERATED_UCLASS_BODY()
 
     /*Setup for the inventory*/
-    UPROPERTY(EditAnywhere, Category = Inventory)
-    TArray<AProjectRPGItem*> ItemInventory; // Our Inventory
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
+        TArray<AProjectRPGItem*> ItemInventory; // Our Inventory
 
-    UPROPERTY(EditAnywhere, Category = Inventory)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         TArray<AProjectRPGItem*> ItemBar;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
+        int32 Alignment1Percentage;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
+        int32 Alignment2Percentage;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
+        TArray<AProjectRPGAlignmentSpell*> Alignment1Spells;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
+        TArray<AProjectRPGAlignmentSpell*> Alignment2Spells;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
+        TArray<AProjectRPGSpell*> BasicSpells;
 
     bool bDrawDebugViewTrace;
 

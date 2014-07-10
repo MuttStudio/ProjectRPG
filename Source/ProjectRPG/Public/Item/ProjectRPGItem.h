@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GameFramework/Actor.h"
+#include "ProjectRPGPlaceable.h"
 #include "ProjectRPGItem.generated.h"
 
 /**
@@ -16,27 +16,16 @@ enum MeshType
 };
 
 UCLASS()
-class AProjectRPGItem : public AActor
+class AProjectRPGItem : public AProjectRPGPlaceable
 {
     GENERATED_UCLASS_BODY()
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        FString ItemName;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        FString Lore;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        FString Description;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
-    int32 InventoryIndex;
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
-        UTexture* Icon;
+    // Delete
+    //int32 InventoryIndex;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
         TSubobjectPtr<class UStaticMeshComponent> DropMesh;
