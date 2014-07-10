@@ -46,6 +46,12 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     ItemBarSize = 10;
     ItemBar.SetNum(ItemBarSize);
     ItemInventory.SetNum(InventoryBags * InventoryBagSize);
+
+    BasicSpells.SetNum(20);
+    Alignment1Spells.SetNum(12);
+    Alignment2Spells.SetNum(12);
+    Alignment1Percentage = 0;
+    Alignment2Percentage = 0;
 }
 
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -273,7 +279,7 @@ bool AProjectRPGCharacter::TryInsertStackableItem(AProjectRPGItem* Item)
         {
             for (int i = 0; i < ItemInventory.Num(); i++)
             {
-                if (ItemInventory[i] && ItemInventory[i]->ItemName == Item->ItemName)
+                if (ItemInventory[i] && ItemInventory[i]->ObjectName == Item->ObjectName)
                 {
                     if (ItemInventory[i]->StackSize + Item->StackSize < ItemInventory[i]->MaxStackSize)
                     {
@@ -402,7 +408,7 @@ void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2, int32 stackSize = 
 
     if (stackSize == 0)
     {
-        if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item2]->isStackable && ItemInventory[item1]->ItemName == ItemInventory[item2]->ItemName)
+        if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item2]->isStackable && ItemInventory[item1]->ObjectName == ItemInventory[item2]->ObjectName)
         {
             if (ItemInventory[item1]->StackSize + ItemInventory[item2]->StackSize <= ItemInventory[item2]->MaxStackSize)
             {
@@ -430,7 +436,7 @@ void AProjectRPGCharacter::MoveItem(int32 item1, int32 item2, int32 stackSize = 
             ItemInventory[item2] = first;
         }
     }
-    else if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item1]->ItemName == ItemInventory[item2]->ItemName && ItemInventory[item2]->StackSize + stackSize <= ItemInventory[item2]->MaxStackSize)
+    else if (IsValid(ItemInventory[item1]) && ItemInventory[item1]->isStackable && IsValid(ItemInventory[item2]) && ItemInventory[item1]->ObjectName == ItemInventory[item2]->ObjectName && ItemInventory[item2]->StackSize + stackSize <= ItemInventory[item2]->MaxStackSize)
     {
         ItemInventory[item2]->StackSize += stackSize;
         ItemInventory[item1]->StackSize -= stackSize;
