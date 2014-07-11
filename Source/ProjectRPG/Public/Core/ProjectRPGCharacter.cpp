@@ -43,13 +43,13 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     InventoryBagSize = 20;
     InventoryBags = 1;
-    ItemBarSize = 10;
+    ItemBarSize = 4;
     ItemBar.SetNum(ItemBarSize);
     ItemInventory.SetNum(InventoryBags * InventoryBagSize);
 
-    BasicSpells.SetNum(20);
-    Alignment1Spells.SetNum(12);
-    Alignment2Spells.SetNum(12);
+    BasicSpells.SetNum(3);
+    Alignment1Spells.SetNum(4);
+    Alignment2Spells.SetNum(4);
     Alignment1Percentage = 0;
     Alignment2Percentage = 0;
 }

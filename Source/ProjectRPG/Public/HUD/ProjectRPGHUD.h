@@ -24,4 +24,6 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "HUD: Show Inventory"))
     void ShowInventory(bool show);
     
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "HUD: Show Spells"))
+    void ShowSpells(bool show);
 };

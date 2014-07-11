@@ -12,6 +12,12 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Spell)
         int32 CooldownTimer;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Spell)
+        FString SpellName;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Spell)
+        FString SpellDescription;
+
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Spell)
         TSubobjectPtr<class UStaticMeshComponent> CastMesh;
 

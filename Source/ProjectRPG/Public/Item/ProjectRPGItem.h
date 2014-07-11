@@ -24,9 +24,6 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
-    // Delete
-    //int32 InventoryIndex;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
         TSubobjectPtr<class UStaticMeshComponent> DropMesh;
 
