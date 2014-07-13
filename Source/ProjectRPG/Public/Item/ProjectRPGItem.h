@@ -51,6 +51,9 @@ public:
         void SetMeshType(MeshType type);
 
     //virtual void BeginPlay() OVERRIDE;
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Notify Pickup"))
+        void NotifyPickup();
+
     void PickedUp();
 
     void InitParams(AProjectRPGItem* item);

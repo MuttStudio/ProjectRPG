@@ -4,8 +4,8 @@ using UnrealBuildTool;
 
 public class ProjectRPG : ModuleRules
 {
-	public ProjectRPG(TargetInfo Target)
-	{
-		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
-	}
+    public ProjectRPG(TargetInfo Target)
+    {
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "AIModule" });
+    }
 }
