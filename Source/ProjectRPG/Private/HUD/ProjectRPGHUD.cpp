@@ -7,7 +7,7 @@ AProjectRPGHUD::AProjectRPGHUD(const class FPostConstructInitializeProperties& P
 {
 //#if UE_BUILD_DEBUG
     //GEngine>AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Showing HUD Degub Info");
-    bShowHitBoxDebugInfo = false;
+    bShowHitBoxDebugInfo = true;
     //bShowDebugInfo = true;
 //#endif
 }
