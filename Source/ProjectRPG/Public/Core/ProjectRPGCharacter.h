@@ -1,6 +1,7 @@
-// Copyright 1998-2014 Epic Games, Inc. All Rights Reserved.
 #pragma once
 
+#include "ProjectRPGQuest.h"
+#include "ProjectRPGQuestObjective.h"
 #include "ProjectRPGItem.h"
 #include "ProjectRPGWeapon.h"
 #include "ProjectRPGConsumable.h"
@@ -13,9 +14,9 @@ class AProjectRPGCharacter : public ACharacter
 {
     GENERATED_UCLASS_BODY()
 
-    /*Setup for the inventory*/
+public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
-        TArray<AProjectRPGItem*> ItemInventory; // Our Inventory
+        TArray<AProjectRPGItem*> ItemInventory;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         TArray<AProjectRPGItem*> ItemBar;
@@ -35,9 +36,18 @@ class AProjectRPGCharacter : public ACharacter
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
         TArray<AProjectRPGSpell*> BasicSpells;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
+        TArray<AProjectRPGQuest*> Quests;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
+        TArray<AProjectRPGQuest*> TurnedInQuests;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
+        TArray<AProjectRPGQuest*> QuestOffer;
+
     bool bDrawDebugViewTrace;
 
-    void Tick(float DeltaSeconds) OVERRIDE;
+    void Tick(float DeltaSeconds) override;
 
     void PickUpItem(AProjectRPGItem* Item);
     void UseCurrentItem();
@@ -64,26 +74,25 @@ class AProjectRPGCharacter : public ACharacter
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Remove Item Inventory", CompactNodeTitle = "RmvItmInv", Keywords = "Remove Item From Inventory"), Category = Inventory)
         void RemoveItemFromInventory(int32 index);
 
-    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Display Hover	"))
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Display Hover"))
         virtual void DisplayItemHover(AProjectRPGItem* newItem);
 
-    /** Pawn mesh: 1st person view (arms; seen only by self) */
+    // This is a hack because it seems like you can't pass in TArray<AProjectRPGQuest*> in this event
+    UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Quest: Display Quests Offered"))
+        virtual void DisplayQuestOffer();
+
     UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
         TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
 
-    /** First person camera */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         TSubobjectPtr<class UCameraComponent> FirstPersonCameraComponent;
 
-    /** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseTurnRate;
 
-    /** Base look up/down rate, in deg/sec. Other scaling may affect final rate. */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         float BaseLookUpRate;
 
-    /** Gun muzzle's offset from the characters location */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         FVector GunOffset;
 
@@ -96,53 +105,45 @@ class AProjectRPGCharacter : public ACharacter
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         int32 ItemBarSize;
 
-    /** Projectile class to spawn */
     UPROPERTY(EditDefaultsOnly, Category = Projectile)
         TSubclassOf<class AProjectRPGProjectile> ProjectileClass;
 
-    /** Sound to play each time we fire */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         USoundBase* FireSound;
 
-    /** AnimMontage to play each time we fire */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         UAnimMontage* FireAnimation;
+
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Quest", CompactNodeTitle = "AddQst", Keywords = "Add Quest"), Category = Quest)
+        void AddQuest(AProjectRPGQuest* quest);
+
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Abandon Quest", CompactNodeTitle = "AbdnQst", Keywords = "Abandon Quest"), Category = Quest)
+        void AbandonQuest(AProjectRPGQuest* quest);
+
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Turn In Quest", CompactNodeTitle = "TrnInQst", Keywords = "Turn In Quest"), Category = Quest)
+        void TurnInQuest(AProjectRPGQuest* quest);
 
 protected:
     void ReplaceItemBarItem(AProjectRPGItem* Item1, AProjectRPGItem* Item2);
 
-    /** Handler for a touch input beginning. */
     void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 
     bool TryInsertNonStackableItem(AProjectRPGItem* Item);
 
     bool TryInsertStackableItem(AProjectRPGItem* Item);
 
-    /** Fires a projectile. */
     void OnFire();
 
     void OnTryPickUp();
-    /** Handles moving forward/backward */
+
     void MoveForward(float Val);
 
-    /** Handles stafing movement, left and right */
     void MoveRight(float Val);
 
-    /**
-     * Called via input to turn at a given rate.
-     * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-     */
     void TurnAtRate(float Rate);
 
-    /**
-     * Called via input to turn look up/down at a given rate.
-     * @param Rate	This is a normalized rate, i.e. 1.0 means 100% of desired turn rate
-     */
     void LookUpAtRate(float Rate);
 
-protected:
-    // APawn interface
-    virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) OVERRIDE;
-    // End of APawn interface
+    virtual void SetupPlayerInputComponent(class UInputComponent* InputComponent) override;
 };
 
