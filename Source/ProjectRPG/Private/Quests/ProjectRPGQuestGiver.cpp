@@ -13,6 +13,6 @@ TArray<AProjectRPGQuest*> AProjectRPGQuestGiver::GetQuests()
 
 void AProjectRPGQuestGiver::BeginPlay()
 {
-    CharacterMovement->MaxWalkSpeed = 150;
+    CharacterMovement->MaxWalkSpeed = 60;
     CharacterMovement->RotationRate.Yaw = 1;
 }
