@@ -81,7 +81,7 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Quest: Display Quests Offered"))
         virtual void DisplayQuestOffer();
 
-    UPROPERTY(VisibleDefaultsOnly, Category = Mesh)
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
         TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
@@ -112,7 +112,10 @@ public:
         USoundBase* FireSound;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-        UAnimMontage* FireAnimation;
+        UAnimMontage* AttackAnim;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+        AProjectRPGWeapon* CurrentWeapon;
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Quest", CompactNodeTitle = "AddQst", Keywords = "Add Quest"), Category = Quest)
         void AddQuest(AProjectRPGQuest* quest);
@@ -123,16 +126,23 @@ public:
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Turn In Quest", CompactNodeTitle = "TrnInQst", Keywords = "Turn In Quest"), Category = Quest)
         void TurnInQuest(AProjectRPGQuest* quest);
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "DoneAttacking", CompactNodeTitle = "DnAtck", Keywords = "Done Attacking"), Category = Attack)
+        void DoneAttacking();
+
+    // TODO: Turn this into an enum to manage attack states
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
+        bool IsSwinging;
+
+    float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+
 protected:
     void ReplaceItemBarItem(AProjectRPGItem* Item1, AProjectRPGItem* Item2);
-
-    void TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location);
 
     bool TryInsertNonStackableItem(AProjectRPGItem* Item);
 
     bool TryInsertStackableItem(AProjectRPGItem* Item);
 
-    void OnFire();
+    void OnFirePress();
 
     void OnTryPickUp();
 

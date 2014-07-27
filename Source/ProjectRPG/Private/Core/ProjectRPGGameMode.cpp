@@ -8,7 +8,7 @@ AProjectRPGGameMode::AProjectRPGGameMode(const class FPostConstructInitializePro
 : Super(PCIP)
 {
     // set default pawn class to our Blueprinted character
-    static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("/Game/Blueprints/Player/MyCharacter"));
+    static ConstructorHelpers::FObjectFinder<UBlueprint> PlayerPawnObject(TEXT("/Game/Blueprints/Player/BP_ProjectRPGCharacter"));
     if (PlayerPawnObject.Object != NULL)
     {
         DefaultPawnClass = (UClass*)PlayerPawnObject.Object->GeneratedClass;

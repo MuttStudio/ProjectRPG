@@ -3,10 +3,6 @@
 #include "ProjectRPGPlaceable.h"
 #include "ProjectRPGItem.generated.h"
 
-/**
- * Represents an item that can be placed into the player's inventory
- */
-
 UENUM(BlueprintType)
 enum MeshType
 {
@@ -47,6 +43,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 StackSize;
 
+    //UFUNCTION()
+    //    virtual void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
     UFUNCTION(BlueprintCallable, Category = Item, meta = (FriendlyName = "Item: Change Mesh"))
         void SetMeshType(MeshType type);
 
@@ -57,4 +56,7 @@ public:
     void PickedUp();
 
     void InitParams(AProjectRPGItem* item);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        APawn* ControllingPawn;
 };
