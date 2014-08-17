@@ -10865,11 +10865,6 @@ class SkeletonBuilder_UI():
 			    #find all vertices in the current geometry
 			    verts = cmds.polyEvaluate(geo, vertex = True)
 
-			    cmds.confirmDialog(title = "Testing Before", message =  verts)
-			    if !isinstance(verts, int)
-			        continue
-
-			    cmds.confirmDialog(title = "Testing After", message =  verts)
 			    for i in range(int(verts)):
 				#get weighted transforms
 				transforms = cmds.skinPercent( skinCluster, geo + ".vtx[" + str(i) + "]", ib = .001, query=True, t= None)

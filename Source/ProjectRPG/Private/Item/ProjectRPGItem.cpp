@@ -6,15 +6,16 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
 {
     EquipMesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("EquipMesh"));
     EquipMesh->SetOnlyOwnerSee(false);
-    SetRootComponent(EquipMesh);
-    EquipMesh->bCastDynamicShadow = false;
-    EquipMesh->CastShadow = false;
+    EquipMesh->bCastDynamicShadow = true;
+    EquipMesh->CastShadow = true;
+    EquipMesh->BodyInstance.SetCollisionProfileName("Weapon");
+    RootComponent = EquipMesh;
 
     DropMesh = PCIP.CreateDefaultSubobject<UStaticMeshComponent>(this, TEXT("DropMesh"));
     DropMesh->SetOnlyOwnerSee(false);
     DropMesh->AttachParent = EquipMesh;
-    DropMesh->bCastDynamicShadow = false;
-    DropMesh->CastShadow = false;
+    DropMesh->bCastDynamicShadow = true;
+    DropMesh->CastShadow = true;
 
     StackSize = 1;
 }

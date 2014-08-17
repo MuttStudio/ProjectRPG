@@ -11,11 +11,11 @@ def customMayaMenu():
     found = False
     for menu in menus:
         label = cmds.menu(menu, q = True, label = True)
-        if label == "Epic Games":
+        if label == "Project RPG":
             found = True
     
     if found == False:
-        customMenu = cmds.menu(parent=gMainWindow, label = 'Epic Games')
+        customMenu = cmds.menu(parent=gMainWindow, label = 'Project RPG')
         
         #tools path
 	toolsPath = cmds.internalVar(usd = True) + "mayaTools.txt"

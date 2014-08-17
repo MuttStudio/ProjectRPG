@@ -18,6 +18,7 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     // Set size for collision capsule
     CapsuleComponent->InitCapsuleSize(42.f, 96.0f);
+    CapsuleComponent->BodyInstance.SetCollisionProfileName("Capsule");
 
     // set our turn rates for input
     BaseTurnRate = 45.f;
@@ -33,11 +34,13 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     // Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
     Mesh1P = PCIP.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("CharacterMesh1P"));
-    Mesh1P->SetOnlyOwnerSee(true);			// only the owning player will see this mesh
+    Mesh1P->SetOnlyOwnerSee(false);			// only the owning player will see this mesh
     Mesh1P->AttachParent = FirstPersonCameraComponent;
     Mesh1P->RelativeLocation = FVector(0.f, 0.f, -150.f);
-    Mesh1P->bCastDynamicShadow = false;
-    Mesh1P->CastShadow = false;
+    Mesh1P->bCastDynamicShadow = true;
+    Mesh1P->CastShadow = true;
+    Mesh1P->BodyInstance.SetCollisionProfileName("CharacterMesh");
+    //Mesh1P->BodyInstance.collision
 
     // Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
     // derived blueprint asset named MyCharacter (to avoid direct content references in C++)
@@ -61,8 +64,7 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
     InputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
     InputComponent->BindAction("PickUp", IE_Pressed, this, &AProjectRPGCharacter::OnTryPickUp);
-    InputComponent->BindAction("Fire", IE_Pressed, this, &AProjectRPGCharacter::OnFire);
-    InputComponent->BindTouch(EInputEvent::IE_Pressed, this, &AProjectRPGCharacter::TouchStarted);
+    InputComponent->BindAction("Fire", IE_Pressed, this, &AProjectRPGCharacter::OnFirePress);
 
     InputComponent->BindAxis("MoveForward", this, &AProjectRPGCharacter::MoveForward);
     InputComponent->BindAxis("MoveRight", this, &AProjectRPGCharacter::MoveRight);
@@ -73,48 +75,41 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
     InputComponent->BindAxis("LookUpRate", this, &AProjectRPGCharacter::LookUpAtRate);
 }
 
-void AProjectRPGCharacter::OnFire()
+
+float AProjectRPGCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
 {
-    if (ProjectileClass != NULL)
+    FHitResult hit;
+    FVector impulse;
+    DamageEvent.GetBestHitInfo(this, DamageCauser, hit, impulse);
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "getting hit");
+    GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, hit.BoneName.ToString());
+    return 0.00;
+}
+
+void AProjectRPGCharacter::OnFirePress()
+{
+    // To make sure we don't get stuck in a state that we don't want lets check if we are punching first
+    // The anim montage normally makes sure we don't have this problem but just in case... 
+    if (IsSwinging)
     {
-        const FRotator SpawnRotation = GetControlRotation();
-        const FVector SpawnLocation = GetActorLocation() + SpawnRotation.RotateVector(GunOffset);
-
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Pitch));
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Roll));
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnRotation.Yaw));
-
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.X));
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Y));
-        GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, FString::FromInt(SpawnLocation.Z));
-
-        UWorld* const World = GetWorld();
-        if (World != NULL)
-        {
-            World->SpawnActor<AProjectRPGProjectile>(ProjectileClass, SpawnLocation, SpawnRotation);
-        }
+        DoneAttacking();
+        return;
     }
 
-    if (FireSound != NULL)
+    // TODO: Later we will put the logic that decides what type of swing is used in here
+    IsSwinging = true;
+    if (CurrentWeapon)
     {
-        UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
-    }
-
-    if (FireAnimation != NULL)
-    {
-        UAnimInstance* AnimInstance = Mesh1P->GetAnimInstance();
-        if (AnimInstance != NULL)
-        {
-            AnimInstance->Montage_Play(FireAnimation, 1.f);
-        }
+        CurrentWeapon->IsAttacking = true;
     }
 }
 
-void AProjectRPGCharacter::TouchStarted(const ETouchIndex::Type FingerIndex, const FVector Location)
+void AProjectRPGCharacter::DoneAttacking()
 {
-    if (FingerIndex == 0)
+    IsSwinging = false;
+    if (CurrentWeapon)
     {
-        OnFire();
+        CurrentWeapon->DoneAttacking();
     }
 }
 
@@ -166,7 +161,7 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     const FVector Direction = CamRot.Vector();
     const FVector EndTrace = StartTrace + Direction * 200;
 
-    FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
+    FCollisionQueryParams TraceParams(FName(TEXT("InfoTrace")), true, this);
     TraceParams.bTraceAsyncScene = true;
     TraceParams.bReturnPhysicalMaterial = true;
     float radius = 20;
@@ -214,6 +209,7 @@ void AProjectRPGCharacter::OnTryPickUp()
     const FVector StartTrace = CamLoc + CamRot.Vector() * 100;
     const FVector Direction = CamRot.Vector();
     const FVector EndTrace = StartTrace + Direction * 200;
+
 
     FCollisionQueryParams TraceParams(FName(TEXT("WeaponTrace")), true, this);
     TraceParams.bTraceAsyncScene = true;

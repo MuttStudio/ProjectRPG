@@ -18,4 +18,8 @@ public:
     TArray<AProjectRPGQuest*> AvailableQuests;
 
     virtual void BeginPlay();
+
+    float Health;
+
+    float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
 };

@@ -8,9 +8,10 @@ class AProjectRPGProjectile : public AActor
 {
     GENERATED_UCLASS_BODY()
 
+public:
     /** Sphere collision component */
     UPROPERTY(VisibleDefaultsOnly, Category = Projectile)
-    TSubobjectPtr<USphereComponent> CollisionComp;
+        TSubobjectPtr<USphereComponent> CollisionComp;
 
     /** Projectile movement component */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement)
@@ -19,5 +20,7 @@ class AProjectRPGProjectile : public AActor
     /** called when projectile hits something */
     UFUNCTION()
         void OnHit(AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+
+    APawn* ControllingPawn;
 };
 
