@@ -10,12 +10,14 @@ class AProjectRPGQuestGiver : public ACharacter
     GENERATED_UCLASS_BODY()
 
 public:
+
     UPROPERTY(EditAnywhere, Category = Behavior)
     class UBehaviorTree* QuestGiverBehavior;
 
-    TArray<AProjectRPGQuest*> GetQuests();
+    //TArray<AProjectRPGQuest*> GetQuests();
 
-    TArray<AProjectRPGQuest*> AvailableQuests;
+    UPROPERTY(Replicated)
+        TArray<AProjectRPGQuest*> AvailableQuests;
 
     virtual void BeginPlay();
 

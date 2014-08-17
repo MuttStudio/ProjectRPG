@@ -12,6 +12,11 @@ AProjectRPGQuestGiverSampleTwo::AProjectRPGQuestGiverSampleTwo(const class FPost
 
 void AProjectRPGQuestGiverSampleTwo::BeginPlay()
 {
+    //if (!HasAuthority())
+    //{
+    //    return;
+    //}
+
     Super::BeginPlay();
     AProjectRPGQuest* q1 = GetWorld()->SpawnActor<AProjectRPGQuest>(AProjectRPGQuest::StaticClass());
 

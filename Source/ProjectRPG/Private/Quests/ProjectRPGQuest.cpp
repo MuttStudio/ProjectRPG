@@ -1,9 +1,11 @@
 #include "ProjectRPG.h"
 #include "ProjectRPGQuest.h"
+#include "UnrealNetwork.h"
 
 AProjectRPGQuest::AProjectRPGQuest(const class FPostConstructInitializeProperties& PCIP)
 : Super(PCIP)
 {
+    SetReplicates(true);
 }
 
 void AProjectRPGQuest::AddOwner(AActor* owner)
@@ -40,4 +42,14 @@ void AProjectRPGQuest::Activate()
             objective->SetActive();
         }
     }
+}
+
+void AProjectRPGQuest::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AProjectRPGQuest, QuestName);
+    DOREPLIFETIME(AProjectRPGQuest, Description);
+    DOREPLIFETIME(AProjectRPGQuest, IsActive);
+    DOREPLIFETIME(AProjectRPGQuest, Objectives);
 }

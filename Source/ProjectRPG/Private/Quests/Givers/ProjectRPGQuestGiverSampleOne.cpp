@@ -5,13 +5,18 @@
 #include "ProjectRPGQuestGiverSampleOne.h"
 
 AProjectRPGQuestGiverSampleOne::AProjectRPGQuestGiverSampleOne(const class FPostConstructInitializeProperties& PCIP)
-	: Super(PCIP)
+: Super(PCIP)
 {
     AIControllerClass = AProjectRPGQuestGiverController::StaticClass();
 }
 
 void AProjectRPGQuestGiverSampleOne::BeginPlay()
 {
+    //if (!HasAuthority())
+    //{
+    //    return;
+    //}
+
     Super::BeginPlay();
     AProjectRPGQuest* q1 = GetWorld()->SpawnActor<AProjectRPGQuest>(AProjectRPGQuest::StaticClass());
     AProjectRPGQuest* q2 = GetWorld()->SpawnActor<AProjectRPGQuest>(AProjectRPGQuest::StaticClass());

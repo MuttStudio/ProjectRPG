@@ -127,7 +127,12 @@ void AProjectRPGPlayerController::ToggleLogMode()
         Cast<AProjectRPGHUD>(MyHUD)->ShowLog(inLogMode);
 }
 
-void AProjectRPGPlayerController::ToggleQuestGiveMode()
+bool AProjectRPGPlayerController::ToggleQuestGiveMode_Validate()
+{
+    return true;
+}
+
+void AProjectRPGPlayerController::ToggleQuestGiveMode_Implementation()
 {
 #if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Controller: Toggle Quest Give Mode");

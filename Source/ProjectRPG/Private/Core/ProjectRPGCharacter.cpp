@@ -5,6 +5,7 @@
 #include "ProjectRPGPlayerController.h"
 #include "ProjectRPGProjectile.h"
 #include "ProjectRPGQuestGiver.h"
+#include "UnrealNetwork.h"
 
 /////////////////////////////////////////////////////////////////////////
 // AProjectRPGCharacter
@@ -33,13 +34,13 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     GunOffset = FVector(100.0f, 30.0f, 10.0f);
 
     // Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
-    Mesh1P = PCIP.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("CharacterMesh1P"));
-    Mesh1P->SetOnlyOwnerSee(false);			// only the owning player will see this mesh
-    Mesh1P->AttachParent = FirstPersonCameraComponent;
-    Mesh1P->RelativeLocation = FVector(0.f, 0.f, -150.f);
-    Mesh1P->bCastDynamicShadow = true;
-    Mesh1P->CastShadow = true;
-    Mesh1P->BodyInstance.SetCollisionProfileName("CharacterMesh");
+    //Mesh = PCIP.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("CharacterMesh1P"));
+    Mesh->SetOnlyOwnerSee(false);			// only the owning player will see this mesh
+    Mesh->AttachParent = FirstPersonCameraComponent;
+    Mesh->RelativeLocation = FVector(0.f, 0.f, -150.f);
+    Mesh->bCastDynamicShadow = true;
+    Mesh->CastShadow = true;
+    Mesh->BodyInstance.SetCollisionProfileName("CharacterMesh");
     //Mesh1P->BodyInstance.collision
 
     // Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
@@ -56,6 +57,9 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     Alignment2Spells.SetNum(4);
     Alignment1Percentage = 0;
     Alignment2Percentage = 0;
+    Health = 100;
+
+    SetReplicates(true);
 }
 
 void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* InputComponent)
@@ -78,16 +82,68 @@ void AProjectRPGCharacter::SetupPlayerInputComponent(class UInputComponent* Inpu
 
 float AProjectRPGCharacter::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
 {
+    //if (Role < ROLE_Authority)
+    //{
+    //    ServerTakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+    //}
+
     FHitResult hit;
     FVector impulse;
     DamageEvent.GetBestHitInfo(this, DamageCauser, hit, impulse);
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "getting hit");
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, hit.BoneName.ToString());
-    return 0.00;
+    Health -= 1;
+    return Health;
 }
+
+//bool AProjectRPGCharacter::ServerTakeDamage_Validate(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+//{
+//    return true;
+//}
+//
+//void AProjectRPGCharacter::ServerTakeDamage_Implementation(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser)
+//{
+//    this->TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+//}
 
 void AProjectRPGCharacter::OnFirePress()
 {
+    StartAttacking();
+}
+
+void AProjectRPGCharacter::DoneAttacking()
+{
+    if (Role < ROLE_Authority)
+    {
+        ServerDoneAttacking();
+        return;
+    }
+
+    IsSwinging = false;
+    if (CurrentWeapon)
+    {
+        CurrentWeapon->DoneAttacking();
+    }
+}
+
+bool AProjectRPGCharacter::ServerDoneAttacking_Validate()
+{
+    return true;
+}
+
+void AProjectRPGCharacter::ServerDoneAttacking_Implementation()
+{
+    DoneAttacking();
+}
+
+void AProjectRPGCharacter::StartAttacking()
+{
+    if (Role < ROLE_Authority)
+    {
+        ServerStartAttacking();
+        return;
+    }
+
     // To make sure we don't get stuck in a state that we don't want lets check if we are punching first
     // The anim montage normally makes sure we don't have this problem but just in case... 
     if (IsSwinging)
@@ -104,13 +160,14 @@ void AProjectRPGCharacter::OnFirePress()
     }
 }
 
-void AProjectRPGCharacter::DoneAttacking()
+bool AProjectRPGCharacter::ServerStartAttacking_Validate()
 {
-    IsSwinging = false;
-    if (CurrentWeapon)
-    {
-        CurrentWeapon->DoneAttacking();
-    }
+    return true;
+}
+
+void AProjectRPGCharacter::ServerStartAttacking_Implementation()
+{
+    StartAttacking();
 }
 
 void AProjectRPGCharacter::MoveForward(float Value)
@@ -149,8 +206,25 @@ void AProjectRPGCharacter::LookUpAtRate(float Rate)
     AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds());
 }
 
+void AProjectRPGCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty > & OutLifetimeProps) const
+{
+    Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+    DOREPLIFETIME(AProjectRPGCharacter, IsSwinging);
+    DOREPLIFETIME(AProjectRPGCharacter, Health);
+    DOREPLIFETIME(AProjectRPGCharacter, AttackAnim);
+    DOREPLIFETIME(AProjectRPGCharacter, CurrentWeapon);
+    DOREPLIFETIME(AProjectRPGCharacter, Quests);
+    DOREPLIFETIME(AProjectRPGCharacter, TurnedInQuests);
+}
+
 void AProjectRPGCharacter::Tick(float DeltaSeconds)
 {
+    if (!HasAuthority())
+    {
+        return;
+    }
+
     Super::Tick(DeltaSeconds);
 
     FVector CamLoc;
@@ -193,8 +267,19 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
         DisplayItemHover(NULL);
     }
 }
-void AProjectRPGCharacter::OnTryPickUp()
+
+bool AProjectRPGCharacter::OnTryPickUp_Validate()
 {
+    return true;
+}
+
+void AProjectRPGCharacter::OnTryPickUp_Implementation()
+{
+    if (!HasAuthority())
+    {
+        return;
+    }
+
     AProjectRPGPlayerController* cont = Cast<AProjectRPGPlayerController>(Controller);
     if (cont->inQuestGiveMode)
     {
@@ -272,7 +357,7 @@ void AProjectRPGCharacter::OnTryPickUp()
         AProjectRPGQuestGiver* questGiver = Cast<AProjectRPGQuestGiver>(Hit.GetActor());
         if (questGiver)
         {
-            QuestOffer = questGiver->GetQuests();
+            QuestOffer = questGiver->AvailableQuests;
 
             for (int i = 0; i < QuestOffer.Num(); i++)
             {
@@ -457,24 +542,31 @@ void AProjectRPGCharacter::MoveItemOnBar(int32 item1, int32 item2)
     ItemBar[item2] = first;
 }
 
-void AProjectRPGCharacter::AddQuest(AProjectRPGQuest* quest)
+bool AProjectRPGCharacter::PickUpQuest_Validate(AProjectRPGQuest* quest)
 {
-    if (Quests.Contains(quest))
+    return true;
+}
+
+void AProjectRPGCharacter::PickUpQuest_Implementation(AProjectRPGQuest* quest)
+{
+    if (!HasAuthority())
     {
         return;
     }
-
-    Quests.Add(quest);
-    quest->Activate();
 
     for (FConstPawnIterator it = GetWorld()->GetPawnIterator(); it; it++)
     {
         AProjectRPGCharacter* player = Cast<AProjectRPGCharacter>(*it);
         if (player)
         {
+            if (player->Quests.Contains(quest))
+            {
+               continue;
+            }
+
+            player->Quests.Add(quest);
+            quest->Activate();
             quest->AddOwner(player);
-            player->QuestOffer.Remove(quest);
-            player->DisplayQuestOffer();
         }
     }
 }
