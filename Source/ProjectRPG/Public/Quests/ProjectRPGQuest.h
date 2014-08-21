@@ -10,16 +10,16 @@ class AProjectRPGQuest : public AActor
     GENERATED_UCLASS_BODY()
 
 public:
-    UPROPERTY(BlueprintReadOnly, Category = Quest)
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = Quest)
         FString QuestName;
 
-    UPROPERTY(BlueprintReadOnly, Category = Quest)
+    UPROPERTY(Replicated, BlueprintReadOnly, Category = Quest)
         FString Description;
 
-    UPROPERTY(BlueprintReadWrite, Category = Quest)
+    UPROPERTY(Replicated, BlueprintReadWrite, Category = Quest)
         bool IsActive;
 
-    UPROPERTY(BlueprintReadWrite, Category = Quest)
+    UPROPERTY(Replicated, BlueprintReadWrite, Category = Quest)
         TArray<AProjectRPGQuestObjective*> Objectives;
 
     UFUNCTION(BlueprintCallable, Category = Quest)

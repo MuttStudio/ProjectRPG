@@ -9,6 +9,12 @@ AProjectRPGBasicAxe::AProjectRPGBasicAxe(const class FPostConstructInitializePro
 
 void AProjectRPGBasicAxe::Tick(float DeltaSeconds)
 {
+    // HACK: Not sure why this is needed but I get an access violation exception if I don't have this
+    if (!HasAuthority())
+    {
+        return;
+    }
+
     if (!IsAttacking)
     {
         return;
@@ -29,10 +35,9 @@ void AProjectRPGBasicAxe::Tick(float DeltaSeconds)
             return;
         }
 
-        PlayersHit.Add(otherActor);
-
         if ((otherActor != NULL) && (otherActor != this))
         {
+            PlayersHit.Add(otherActor);
             FPointDamageEvent pointDamage;
             // pointDamage.DamageTypeClass -- Need to make some damage types
             pointDamage.HitInfo = hit;

@@ -21,6 +21,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Inventory)
         TArray<AProjectRPGItem*> ItemBar;
 
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Character)
+        int32 Health;
+
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
         int32 Alignment1Percentage;
 
@@ -36,10 +39,10 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Magic)
         TArray<AProjectRPGSpell*> BasicSpells;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Quest)
         TArray<AProjectRPGQuest*> Quests;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Quest)
         TArray<AProjectRPGQuest*> TurnedInQuests;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Quest)
@@ -81,9 +84,6 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Quest: Display Quests Offered"))
         virtual void DisplayQuestOffer();
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
-        TSubobjectPtr<class USkeletalMeshComponent> Mesh1P;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
         TSubobjectPtr<class UCameraComponent> FirstPersonCameraComponent;
 
@@ -111,14 +111,14 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         USoundBase* FireSound;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         UAnimMontage* AttackAnim;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
+    UPROPERTY(Replicated, EditAnywhere, BlueprintReadWrite, Category = Gameplay)
         AProjectRPGWeapon* CurrentWeapon;
 
-    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Add Quest", CompactNodeTitle = "AddQst", Keywords = "Add Quest"), Category = Quest)
-        void AddQuest(AProjectRPGQuest* quest);
+    UFUNCTION(reliable, server, WithValidation, BlueprintCallable, meta = (FriendlyName = "Pick Up Quest", CompactNodeTitle = "PckQst", Keywords = "Pick Up Quest"), Category = Quest)
+        void PickUpQuest(AProjectRPGQuest* quest);
 
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "Abandon Quest", CompactNodeTitle = "AbdnQst", Keywords = "Abandon Quest"), Category = Quest)
         void AbandonQuest(AProjectRPGQuest* quest);
@@ -129,11 +129,23 @@ public:
     UFUNCTION(BlueprintCallable, meta = (FriendlyName = "DoneAttacking", CompactNodeTitle = "DnAtck", Keywords = "Done Attacking"), Category = Attack)
         void DoneAttacking();
 
+    UFUNCTION(BlueprintCallable, meta = (FriendlyName = "StartAttacking", CompactNodeTitle = "StAtck", Keywords = "Start Attacking"), Category = Attack)
+        void StartAttacking();
+
+    UFUNCTION(reliable, server, WithValidation)
+        void ServerDoneAttacking();
+
+    UFUNCTION(reliable, server, WithValidation)
+        void ServerStartAttacking();
+
     // TODO: Turn this into an enum to manage attack states
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
+    UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Attack)
         bool IsSwinging;
 
     float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser) override;
+
+    //UFUNCTION(reliable, server, WithValidation)
+    //    void ServerTakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, class AActor* DamageCauser);
 
 protected:
     void ReplaceItemBarItem(AProjectRPGItem* Item1, AProjectRPGItem* Item2);
@@ -144,7 +156,8 @@ protected:
 
     void OnFirePress();
 
-    void OnTryPickUp();
+    UFUNCTION(reliable, server, WithValidation)
+        void OnTryPickUp();
 
     void MoveForward(float Val);
 

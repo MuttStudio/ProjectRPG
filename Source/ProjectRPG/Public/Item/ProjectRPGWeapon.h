@@ -9,7 +9,7 @@ class AProjectRPGWeapon : public AProjectRPGItem
     GENERATED_UCLASS_BODY()
 
 public:
-    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
+    UPROPERTY(Replicated, VisibleAnywhere, BlueprintReadWrite, Category = Attack)
         bool IsAttacking;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Attack)
