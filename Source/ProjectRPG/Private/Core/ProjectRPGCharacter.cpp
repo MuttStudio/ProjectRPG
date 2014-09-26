@@ -25,7 +25,7 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     BaseTurnRate = 45.f;
     BaseLookUpRate = 45.f;
 
-    // Create a CameraComponent	
+    // Create a CameraComponent
     FirstPersonCameraComponent = PCIP.CreateDefaultSubobject<UCameraComponent>(this, TEXT("FirstPersonCamera"));
     FirstPersonCameraComponent->AttachParent = CapsuleComponent;
     FirstPersonCameraComponent->RelativeLocation = FVector(0, 0, 64.f); // Position the camera
@@ -35,7 +35,7 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
 
     // Create a mesh component that will be used when being viewed from a '1st person' view (when controlling this pawn)
     //Mesh = PCIP.CreateDefaultSubobject<USkeletalMeshComponent>(this, TEXT("CharacterMesh1P"));
-    Mesh->SetOnlyOwnerSee(false);			// only the owning player will see this mesh
+    Mesh->SetOnlyOwnerSee(false);// only the owning player will see this mesh
     Mesh->AttachParent = FirstPersonCameraComponent;
     Mesh->RelativeLocation = FVector(0.f, 0.f, -150.f);
     Mesh->bCastDynamicShadow = true;
@@ -239,7 +239,7 @@ void AProjectRPGCharacter::Tick(float DeltaSeconds)
     TraceParams.bTraceAsyncScene = true;
     TraceParams.bReturnPhysicalMaterial = true;
     float radius = 20;
-    FHitResult Hit(ForceInit);
+    FHitResult Hit(ForceInit); 
     if (GetWorld()->SweepSingle(Hit, StartTrace, EndTrace, FQuat(1.0, 1.0, 1.0, 1.0), ECC_WorldStatic, FCollisionShape::MakeSphere(radius), TraceParams, FCollisionResponseParams()))
     {
         AProjectRPGItem* NewItem = Cast<AProjectRPGItem>(Hit.GetActor());
@@ -323,7 +323,7 @@ void AProjectRPGCharacter::OnTryPickUp_Implementation()
                     );
             }
 
-            if (NewItem)
+            if (NewItem && NewItem->ItemOwner == NULL)
             {
                 NewItems.AddUnique(NewItem);
             }
@@ -392,7 +392,7 @@ void AProjectRPGCharacter::PickUpItem(AProjectRPGItem* Item)
     {
         if ((Item->isStackable && TryInsertStackableItem(Item)) || TryInsertNonStackableItem(Item))
         {
-            Item->PickedUp();
+            Item->PickedUp(this);
         }
         else
         {
