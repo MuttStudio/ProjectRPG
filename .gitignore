@@ -16,3 +16,4 @@
 *~
 *.pyc
 AssetBases/autoback
+AssetBases/sceneassets/*
