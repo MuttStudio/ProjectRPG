@@ -20,11 +20,12 @@ AProjectRPGItem::AProjectRPGItem(const class FPostConstructInitializeProperties&
     StackSize = 1;
 }
 
-void AProjectRPGItem::PickedUp()
+void AProjectRPGItem::PickedUp(const ACharacter* newOwner)
 {
 #if UE_BUILD_DEBUG
     GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Red, "Picked up from Item");
 #endif
+    this->ItemOwner = newOwner;
     SetMeshType(none);
     NotifyPickup();
 }

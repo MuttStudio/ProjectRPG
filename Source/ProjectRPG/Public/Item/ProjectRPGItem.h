@@ -18,6 +18,9 @@ class AProjectRPGItem : public AProjectRPGPlaceable
 
 public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
+        const ACharacter* ItemOwner;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Item)
         int32 Value;
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Mesh)
@@ -53,7 +56,7 @@ public:
     UFUNCTION(BlueprintImplementableEvent, meta = (FriendlyName = "Item: Notify Pickup"))
         void NotifyPickup();
 
-    void PickedUp();
+    void PickedUp(const ACharacter* newOwner);
 
     void InitParams(AProjectRPGItem* item);
 
