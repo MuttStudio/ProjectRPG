@@ -46,7 +46,7 @@ AProjectRPGCharacter::AProjectRPGCharacter(const class FPostConstructInitializeP
     // Note: The ProjectileClass and the skeletal mesh/anim blueprints for Mesh1P are set in the
     // derived blueprint asset named MyCharacter (to avoid direct content references in C++)
 
-    InventoryBagSize = 20;
+    InventoryBagSize = 48;
     InventoryBags = 1;
     ItemBarSize = 4;
     ItemBar.SetNum(ItemBarSize);
